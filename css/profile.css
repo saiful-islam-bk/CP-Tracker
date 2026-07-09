@@ -6,7 +6,7 @@
 }
 
 .login-box{
-  display: none;
+  display: block;
   width:420px;
   margin:60px auto;
   background:white;
@@ -16,7 +16,7 @@
 }
 
 .profile-card{
-  display: block;
+  display: none;
   width:850px;
   margin:50px auto;
   background:white;
