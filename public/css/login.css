@@ -1,0 +1,219 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+}
+
+.container{
+    display:flex;
+    min-height:100vh;
+}
+
+/* LEFT */
+
+.left{
+
+    width:45%;
+    background:#2563eb;
+
+    color:white;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+
+    padding:80px;
+}
+
+.left h1{
+
+    font-size:38px;
+    margin-bottom:20px;
+}
+
+.left h2{
+
+    font-size:50px;
+    line-height:1.2;
+
+    margin-bottom:25px;
+}
+
+.left p{
+
+    font-size:18px;
+    opacity:.9;
+
+    margin-bottom:35px;
+}
+
+.platforms{
+
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.platforms span{
+
+    background:rgba(255,255,255,.15);
+
+    padding:12px 22px;
+
+    border-radius:30px;
+
+    backdrop-filter:blur(10px);
+}
+
+/* RIGHT */
+
+.right{
+
+    width:55%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:30px;
+}
+
+.login-box{
+
+    width:420px;
+}
+
+.login-box h2{
+
+    font-size:34px;
+    margin-bottom:8px;
+}
+
+.login-box p{
+
+    color:#666;
+    margin-bottom:30px;
+}
+
+label{
+
+    display:block;
+    margin-bottom:8px;
+    font-weight:500;
+}
+
+input[type=text],
+input[type=password]{
+
+    width:100%;
+
+    padding:15px;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    margin-bottom:20px;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:.3s;
+}
+
+input:focus{
+
+    border-color:#2563eb;
+}
+
+.row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+}
+
+.remember{
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    font-size:14px;
+}
+
+.row a{
+
+    text-decoration:none;
+    color:#2563eb;
+
+    font-size:14px;
+}
+
+button{
+
+    width:100%;
+
+    border:none;
+
+    padding:15px;
+
+    background:#2563eb;
+
+    color:white;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    transition:.3s;
+}
+
+button:hover{
+
+    background:#1d4ed8;
+}
+
+.bottom{
+
+    text-align:center;
+
+    margin-top:25px;
+}
+
+.bottom a{
+
+    text-decoration:none;
+
+    color:#2563eb;
+
+    font-weight:600;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+    .left{
+
+        display:none;
+    }
+
+    .right{
+
+        width:100%;
+    }
+
+}
