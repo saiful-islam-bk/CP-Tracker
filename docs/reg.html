@@ -18,7 +18,9 @@
 
     <div id="navbar"></div>
     <script src="js/nav.js"></script>
-    
+
+    <script type="module" src="js/reg.js"></script>
+
     <div class="container">
 
         <div class="left">
@@ -48,21 +50,21 @@
 
                 <p>Join CP Tracker today</p>
 
-                <form>
+                <form id="regform">
 
                     <label>Full Name</label>
-                    <input type="text" placeholder="Enter your full name">
+                    <input type="text" id="fullname" placeholder="Enter your full name">
 
                     <label>Email</label>
-                    <input type="email" placeholder="Enter your email">
+                    <input type="email" id="email" placeholder="Enter your email">
 
                     <label>Password</label>
-                    <input type="password" placeholder="Create a password">
+                    <input type="password" id="password" placeholder="Create a password">
 
                     <label>Confirm Password</label>
-                    <input type="password" placeholder="Confirm your password">
+                    <input type="password" id="confirmPassword" placeholder="Confirm your password">
 
-                    <button type="submit">
+                    <button type="submit" id="create_account">
                         Create Account
                     </button>
 
