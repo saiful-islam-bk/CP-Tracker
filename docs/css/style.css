@@ -10,29 +10,6 @@ body{
   color:#333;
 }
 
-nav{
-  background:#1f2937;
-  color:white;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:18px 8%;
-}
-
-nav ul{
-  display:flex;
-  list-style:none;
-}
-
-nav li{
-  margin-left:25px;
-}
-
-nav a{
-  color:white;
-  text-decoration:none;
-}
-
 .hero{
   height:80vh;
   display:flex;

@@ -4,82 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | CP Tracker</title>
-
     <link rel="stylesheet" href="css/login.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="container">
-
-    <div class="left">
-
-        <h1>CP Tracker</h1>
-
-        <h2>Track.<br>Practice.<br>Improve.</h2>
-
-        <p>
-            One dashboard for your competitive programming journey.
-        </p>
-
-        <div class="platforms">
-            <span>Codeforces</span>
-            <span>CodeChef</span>
-            <span>AtCoder</span>
-        </div>
-
-    </div>
-
-    <div class="right">
-
-        <div class="login-box">
-
-            <h2>Welcome Back</h2>
-
-            <p>Login to continue</p>
-
-            <form>
-
-                <label>Username / Email</label>
-                <input type="text" placeholder="Enter username or email">
-
-                <label>Password</label>
-                <input type="password" placeholder="Enter password">
-
-                <div class="row">
-
-                <label class="remember">
-                    <input type="checkbox">
-                    Remember Me
-                </label>
-
-                <a href="#">Forgot Password?</a>
-
-                </div>
-
-                <button type="submit">
-                    Login
-                </button>
-
-            </form>
-
-            <div class="bottom">
-
-                Don't have an account?
-
-                <a href="reg.html">
-                    Create Account
-                </a>
-
+    <div id="navbar"></div>
+    <script src="js/nav.js"></script>
+    
+    <div class="container">
+        <div class="left">
+            <h1>CP Tracker</h1>
+            <h2>Track.<br>Practice.<br>Improve.</h2>
+            <p>
+                One dashboard for your competitive programming journey.
+            </p>
+            <div class="platforms">
+                <span>Codeforces</span>
+                <span>CodeChef</span>
+                <span>AtCoder</span>
             </div>
-
         </div>
+        <div class="right">
+            <div class="login-box">
+                <h2>Welcome Back</h2>
+                <p>Login to continue</p>
+                <form>
+                    <label>Username / Email</label>
+                    <input type="text" placeholder="Enter username or email">
+                    <label>Password</label>
+                    <input type="password" placeholder="Enter password">
+                    <div class="row">
+                    <label class="remember">
+                        <input type="checkbox">
+                        Remember Me
+                    </label>
+                    <a href="#">Forgot Password?</a>
+                    </div>
+                    <button type="submit">
+                        Login
+                    </button>
+                </form>
 
+                <div class="bottom">
+                    Don't have an account?
+                    <a href="reg.html">
+                        Create Account
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-
-</div>
-
 </body>
 </html>
