@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | CP Tracker</title>
+
+    <link rel="stylesheet" href="css/profile.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+<div id="navbar"></div>
+<script src="js/nav.js"></script>
+
+<section class="profile-page">
+
+    <div class="profile-container">
+
+        <div class="page-title">
+
+            <div>
+
+                <h1>My Profile</h1>
+
+                <p>
+                    Manage your Competitive Programming account and connected platforms.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="profile-top">
+
+            <div class="profile-info-card">
+
+                <h2>Personal Information</h2>
+
+                <div class="input-group">
+
+                    <label>Full Name</label>
+
+                    <input
+                        type="text"
+                        id="fullname"
+                        placeholder="Full Name">
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Email Address</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        readonly
+                        placeholder="Email">
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Country</label>
+
+                    <input
+                        type="text"
+                        id="country"
+                        placeholder="Bangladesh">
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Institution</label>
+
+                    <input
+                        type="text"
+                        id="institution"
+                        placeholder="Sylhet Engineering College">
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Bio</label>
+
+                    <textarea
+                        id="bio"
+                        rows="5"
+                        placeholder="Tell everyone about yourself..."></textarea>
+
+                </div>
+
+            </div>
+
+            <div class="profile-picture-card">
+
+                <div class="picture">
+
+                    <img
+                        src="images/default-profile.png"
+                        id="profileImage">
+
+                    <div class="overlay">
+
+                        <button>
+                            Change Photo
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <input
+                    type="file"
+                    id="profileUpload"
+                    hidden>
+
+                <h2 id="profileName">
+                    Saiful Islam
+                </h2>
+
+                <p>
+                    Competitive Programmer
+                </p>
+
+                <div class="joined">
+
+                    <span>Joined</span>
+
+                    <strong>August 2026</strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="section-title">
+
+            <h2>Competitive Programming Accounts</h2>
+
+        </div>
+
+        <div class="platform-grid">
+
+                  <!-- Codeforces -->
+
+            <div class="platform-card">
+
+                <div class="platform-header">
+
+                    <div class="platform-icon cf">
+                        CF
+                    </div>
+
+                    <div>
+
+                        <h3>Codeforces</h3>
+
+                        <span>Connect your handle</span>
+
+                    </div>
+
+                </div>
+
+                <label>Handle</label>
+
+                <input
+                    type="text"
+                    id="cfHandle"
+                    placeholder="tourist">
+
+                <div class="platform-footer">
+
+                    <span class="status not-connected">
+                        ● Not Connected
+                    </span>
+
+                    <button class="verify-btn">
+                        Verify
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- AtCoder -->
+
+            <div class="platform-card">
+
+                <div class="platform-header">
+
+                    <div class="platform-icon ac">
+                        AC
+                    </div>
+
+                    <div>
+
+                        <h3>AtCoder</h3>
+
+                        <span>Connect your handle</span>
+
+                    </div>
+
+                </div>
+
+                <label>Handle</label>
+
+                <input
+                    type="text"
+                    id="acHandle"
+                    placeholder="Benq">
+
+                <div class="platform-footer">
+
+                    <span class="status not-connected">
+                        ● Not Connected
+                    </span>
+
+                    <button class="verify-btn">
+                        Verify
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- CodeChef -->
+
+            <div class="platform-card">
+
+                <div class="platform-header">
+
+                    <div class="platform-icon cc">
+                        CC
+                    </div>
+
+                    <div>
+
+                        <h3>CodeChef</h3>
+
+                        <span>Connect your handle</span>
+
+                    </div>
+
+                </div>
+
+                <label>Handle</label>
+
+                <input
+                    type="text"
+                    id="ccHandle"
+                    placeholder="ecnerwala">
+
+                <div class="platform-footer">
+
+                    <span class="status not-connected">
+                        ● Not Connected
+                    </span>
+
+                    <button class="verify-btn">
+                        Verify
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="section-title">
+
+            <h2>Your Statistics</h2>
+
+        </div>
+
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+
+                <h1>0</h1>
+
+                <span>Problems Solved</span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h1>--</h1>
+
+                <span>Current Rating</span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h1>--</h1>
+
+                <span>Highest Rating</span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h1>0</h1>
+
+                <span>Contests</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="buttons">
+
+            <button
+                class="cancel-btn"
+                type="reset">
+
+                Cancel
+
+            </button>
+
+            <button
+                class="save-btn"
+                type="submit">
+
+                Save Changes
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+
+</html>
