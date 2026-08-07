@@ -4,346 +4,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>My Profile | CP Tracker</title>
 
+    <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/profile.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
 </head>
 
 <body>
+    <!-- Navbar -->
+    <div id="navbar"></div>
+    <!-- Cover -->
+    <section class="cover">
+        <div class="cover-overlay">
+            <div class="profile-header">
+                <div class="profile-image">
+                    <img src="images/default-profile.png" id="profileImage">
+                    <input type="file" id="profileUpload" hidden>
+                    <button onclick="uploadPhoto()" id="changePhoto">Change Photo</button>
+                    <!-- <button ></button> -->
+                </div>
+                <div class="profile-details">
+                    <h1 id="fullname">Loading...</h1>
+                    <h3 id="username">@username</h3>
+                    <p id="bioText">Competitive Programmer</p>
+                    <div class="profile-meta">
+                        <span id="country"> 🌍 Bangladesh</span>
+                        <span id="joined">Joined Aug 2026</span>
+                    </div>
+                </div>
 
-<div id="navbar"></div>
-<script src="js/nav.js"></script>
-
-<section class="profile-page">
-
-    <div class="profile-container">
-
-        <div class="page-title">
-
-            <div>
-
-                <h1>My Profile</h1>
-
-                <p>
-                    Manage your Competitive Programming account and connected platforms.
-                </p>
-
+                <div class="profile-action">
+                    <button id="editBtn">Edit Profile</button>
+                </div>
             </div>
-
         </div>
+    </section>
 
-        <div class="profile-top">
+    <!-- Main -->
 
-            <div class="profile-info-card">
-
+    <main class="container">
+        <!-- Left -->
+        <div class="left-column">
+            <div class="card">
                 <h2>Personal Information</h2>
-
-                <div class="input-group">
-
+                <div class="form-group">
                     <label>Full Name</label>
-
-                    <input
-                        type="text"
-                        id="fullname"
-                        placeholder="Full Name">
-
+                    <input type="text" id="fullNameInput">
                 </div>
 
-                <div class="input-group">
-
-                    <label>Email Address</label>
-
-                    <input
-                        type="email"
-                        id="email"
-                        readonly
-                        placeholder="Email">
-
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="usernameInput" readonly>
                 </div>
 
-                <div class="input-group">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="emailInput" readonly>
+                </div>
 
+                <div class="form-group">
                     <label>Country</label>
-
-                    <input
-                        type="text"
-                        id="country"
-                        placeholder="Bangladesh">
-
+                    <input type="text" id="countryInput">
                 </div>
 
-                <div class="input-group">
-
+                <div class="form-group">
                     <label>Institution</label>
-
-                    <input
-                        type="text"
-                        id="institution"
-                        placeholder="Sylhet Engineering College">
-
+                    <input type="text" id="institutionInput">
                 </div>
-
-                <div class="input-group">
-
+                <div class="form-group">
                     <label>Bio</label>
-
-                    <textarea
-                        id="bio"
-                        rows="5"
-                        placeholder="Tell everyone about yourself..."></textarea>
-
+                    <textarea id="bioInput" rows="5"></textarea>
                 </div>
-
             </div>
-
-            <div class="profile-picture-card">
-
-                <div class="picture">
-
-                    <img
-                        src="images/default-profile.png"
-                        id="profileImage">
-
-                    <div class="overlay">
-
-                        <button>
-                            Change Photo
-                        </button>
-
-                    </div>
-
-                </div>
-
-                <input
-                    type="file"
-                    id="profileUpload"
-                    hidden>
-
-                <h2 id="profileName">
-                    Saiful Islam
-                </h2>
-
-                <p>
-                    Competitive Programmer
-                </p>
-
-                <div class="joined">
-
-                    <span>Joined</span>
-
-                    <strong>August 2026</strong>
-
-                </div>
-
-            </div>
-
         </div>
 
-        <div class="section-title">
+        <!-- Right -->
 
-            <h2>Competitive Programming Accounts</h2>
-
-        </div>
-
-        <div class="platform-grid">
-
-                  <!-- Codeforces -->
-
-            <div class="platform-card">
-
-                <div class="platform-header">
-
-                    <div class="platform-icon cf">
-                        CF
-                    </div>
-
+        <div class="right-column">
+            <div class="card">
+                <h2>Connected Accounts</h2>
+                <!-- CF -->
+                <div class="platform">
                     <div>
-
                         <h3>Codeforces</h3>
-
-                        <span>Connect your handle</span>
-
+                        <input type="text" id="cf" placeholder="Handle">
                     </div>
-
+                    <button class="verify">Verify</button>
                 </div>
-
-                <label>Handle</label>
-
-                <input
-                    type="text"
-                    id="cfHandle"
-                    placeholder="tourist">
-
-                <div class="platform-footer">
-
-                    <span class="status not-connected">
-                        ● Not Connected
-                    </span>
-
-                    <button class="verify-btn">
-                        Verify
-                    </button>
-
-                </div>
-
-            </div>
-
-            <!-- AtCoder -->
-
-            <div class="platform-card">
-
-                <div class="platform-header">
-
-                    <div class="platform-icon ac">
-                        AC
-                    </div>
-
+                <!-- CC -->
+                <div class="platform">
                     <div>
-
-                        <h3>AtCoder</h3>
-
-                        <span>Connect your handle</span>
-
-                    </div>
-
-                </div>
-
-                <label>Handle</label>
-
-                <input
-                    type="text"
-                    id="acHandle"
-                    placeholder="Benq">
-
-                <div class="platform-footer">
-
-                    <span class="status not-connected">
-                        ● Not Connected
-                    </span>
-
-                    <button class="verify-btn">
-                        Verify
-                    </button>
-
-                </div>
-
-            </div>
-
-            <!-- CodeChef -->
-
-            <div class="platform-card">
-
-                <div class="platform-header">
-
-                    <div class="platform-icon cc">
-                        CC
-                    </div>
-
-                    <div>
-
                         <h3>CodeChef</h3>
-
-                        <span>Connect your handle</span>
-
+                        <input type="text" id="cc" placeholder="Handle">
                     </div>
-
+                    <button class="verify">Verify</button>
                 </div>
-
-                <label>Handle</label>
-
-                <input
-                    type="text"
-                    id="ccHandle"
-                    placeholder="ecnerwala">
-
-                <div class="platform-footer">
-
-                    <span class="status not-connected">
-                        ● Not Connected
-                    </span>
-
-                    <button class="verify-btn">
-                        Verify
-                    </button>
-
+                <!-- AC -->
+                <div class="platform">
+                    <div>
+                        <h3>AtCoder</h3>
+                        <input type="text" id="ac" placeholder="Handle">
+                    </div>
+                    <button class="verify">Verify</button>
                 </div>
-
             </div>
 
+            <div class="card">
+                <h2>Statistics</h2>
+                <div class="stats">
+                    <div class="stat">
+                        <h1 id="solved">0</h1>
+                        <span>Problems</span>
+                    </div>
+                    <div class="stat">
+                        <h1 id="rating">--</h1>
+                        <span>Rating</span>
+                    </div>
+                    <div class="stat">
+                        <h1 id="maxRating">--</h1>
+                        <span>Max Rating</span>
+                    </div>
+                    <div class="stat">
+                        <h1 id="contest">0</h1>
+                        <span>Contests</span>
+                    </div>
+                </div>
+            </div>
         </div>
+    </main>
 
+    <!-- Bottom Buttons -->
 
-        <div class="section-title">
+    <section class="save-section">
+        <button id="cancelBtn" class="cancel"> Cancel </button>
+        <button id="saveBtn" class="save">
+            Save Changes
+        </button>
 
-            <h2>Your Statistics</h2>
+    </section>
 
-        </div>
-
-
-        <div class="stats-grid">
-
-            <div class="stat-card">
-
-                <h1>0</h1>
-
-                <span>Problems Solved</span>
-
-            </div>
-
-            <div class="stat-card">
-
-                <h1>--</h1>
-
-                <span>Current Rating</span>
-
-            </div>
-
-            <div class="stat-card">
-
-                <h1>--</h1>
-
-                <span>Highest Rating</span>
-
-            </div>
-
-            <div class="stat-card">
-
-                <h1>0</h1>
-
-                <span>Contests</span>
-
-            </div>
-
-        </div>
-
-
-        <div class="buttons">
-
-            <button
-                class="cancel-btn"
-                type="reset">
-
-                Cancel
-
-            </button>
-
-            <button
-                class="save-btn"
-                type="submit">
-
-                Save Changes
-
-            </button>
-
-        </div>
-
-    </div>
-
-</section>
+    <script src="js/nav.js"></script>
+    <script src="js/profile.js"></script>
 
 </body>
 

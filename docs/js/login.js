@@ -1,75 +1,117 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+const form = document.getElementById("loginform");
 
-import {
-    getAuth,
-    signInWithEmailAndPassword,
-    setPersistence,
-    browserLocalPersistence,
-    browserSessionPersistence
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDf82k9aGxzZnrLyXr3cDFfUaM95qdBpb8",
-  authDomain: "cp-tracker-f23a6.firebaseapp.com",
-  databaseURL: "https://cp-tracker-f23a6-default-rtdb.firebaseio.com",
-  projectId: "cp-tracker-f23a6",
-  storageBucket: "cp-tracker-f23a6.firebasestorage.app",
-  messagingSenderId: "837086298943",
-  appId: "1:837086298943:web:c88aec4567e693ae65898a",
-  measurementId: "G-J1YL7WJ94W"
-};
+form.addEventListener("submit", async (event) => {
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+    event.preventDefault();
 
-document.getElementById("loginform").addEventListener("submit", async (e) => {
 
-    e.preventDefault();
+    const identifier =
+        document.getElementById("identifier").value.trim();
 
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-    const rememberMe = document.getElementById("rememberMe").checked;
+    const password =
+        document.getElementById("password").value;
+
+    const rememberMe =
+        document.getElementById("rememberMe").checked;
+
+
+    if (!identifier || !password) {
+
+        alert(
+            "Please enter username/email and password"
+        );
+
+        return;
+
+    }
+
 
     try {
 
-        await setPersistence(
-            auth,
-            rememberMe
-                ? browserLocalPersistence
-                : browserSessionPersistence
+        const response = await fetch(
+            "http://localhost:3000/login",
+            {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    identifier,
+                    password
+                })
+
+            }
         );
 
-        await signInWithEmailAndPassword(
-            auth,
-            email,
-            password
-        );
 
-        alert("Login Successful!");
+        const data = await response.json();
 
-        window.location.href = "profile.html";
 
-    }
-    catch (error) {
+        // Login failed
 
-        switch (error.code) {
+        if (!response.ok) {
 
-            case "auth/invalid-credential":
-                alert("Invalid email or password.");
-                break;
+            alert(data.message);
 
-            case "auth/invalid-email":
-                alert("Invalid email.");
-                break;
-
-            case "auth/too-many-requests":
-                alert("Too many failed attempts. Please try again later.");
-                break;
-
-            default:
-                alert(error.message);
+            return;
 
         }
+
+
+        // Login successful
+
+        alert("Login successful");
+
+
+        // Remember Me checked
+
+        if (rememberMe) {
+
+            localStorage.setItem(
+                "token",
+                data.token
+            );
+
+            localStorage.setItem(
+                "user",
+                JSON.stringify(data.user)
+            );
+
+        }
+
+        // Remember Me not checked
+
+        else {
+
+            sessionStorage.setItem(
+                "token",
+                data.token
+            );
+
+            sessionStorage.setItem(
+                "user",
+                JSON.stringify(data.user)
+            );
+
+        }
+
+
+        // Go homepage
+
+        window.location.href = "index.html";
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Could not connect to the server"
+        );
 
     }
 

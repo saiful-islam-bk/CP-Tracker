@@ -1,86 +1,108 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+const form = document.getElementById("regform");
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDf82k9aGxzZnrLyXr3cDFfUaM95qdBpb8",
-  authDomain: "cp-tracker-f23a6.firebaseapp.com",
-  databaseURL: "https://cp-tracker-f23a6-default-rtdb.firebaseio.com",
-  projectId: "cp-tracker-f23a6",
-  storageBucket: "cp-tracker-f23a6.firebasestorage.app",
-  messagingSenderId: "837086298943",
-  appId: "1:837086298943:web:c88aec4567e693ae65898a",
-  measurementId: "G-J1YL7WJ94W"
-};
 
-const app = initializeApp(firebaseConfig);
+form.addEventListener("submit", async (event) => {
 
-import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    updateProfile
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+    event.preventDefault();
 
-import {
-    getFirestore,
-    doc,
-    setDoc,
-    serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-const auth = getAuth(app);
-const db = getFirestore(app);
+    // Get values
 
-document.getElementById("regform").addEventListener("submit", async (e) => {
+    const fullname =
+        document.getElementById("fullname").value.trim();
 
-    e.preventDefault();
-    const fullname = document.getElementById("fullname").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
+    const email =
+        document.getElementById("email").value.trim();
 
-    alert("kire");
-    if (!fullname || !email || !password || !confirmPassword) {
-        alert("Please fill all fields.");
-        return;
-    }
+    const username =
+        document.getElementById("username").value.trim();
+
+    const country =
+        document.getElementById("country").value.trim();
+
+    const institution =
+        document.getElementById("institution").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    const confirmPassword =
+        document.getElementById("confirmPassword").value;
+
+
+    // Password match check
 
     if (password !== confirmPassword) {
-        alert("Passwords do not match.");
+
+        alert("Passwords do not match");
+
         return;
     }
+
+
+    // Create object
+
+    const userData = {
+
+        fullname,
+        email,
+        username,
+        country,
+        institution,
+        password,
+        confirmPassword
+
+    };
+
 
     try {
 
-        const userCredential =
-            await createUserWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
+        const response = await fetch(
+            "http://localhost:3000/register",
+            {
 
-        const user = userCredential.user;
+                method: "POST",
 
-        // Firebase Auth profile-এ নাম সংরক্ষণ
-        await updateProfile(user, {
-            displayName: fullname
-        });
+                headers: {
+                    "Content-Type": "application/json"
+                },
 
-        // Firestore-এ অতিরিক্ত তথ্য সংরক্ষণ
-        await setDoc(doc(db, "users", user.uid), {
-            fullName: fullname,
-            email: email,
-            codeforces: "",
-            atcoder: "",
-            codechef: "",
-            createdAt: serverTimestamp()
-        });
+                body: JSON.stringify(userData)
 
-        alert("Account created successfully!");
+            }
+        );
+
+
+        const data = await response.json();
+
+
+        // Failed
+
+        if (!response.ok) {
+
+            alert(data.message);
+
+            return;
+        }
+
+
+        // Success
+
+        alert("Account created successfully");
+
+
+        // Redirect login
 
         window.location.href = "login.html";
 
+
     } catch (error) {
 
-        alert(error.message);
+        console.error(error);
+
+        alert(
+            "Could not connect to the server"
+        );
 
     }
 
