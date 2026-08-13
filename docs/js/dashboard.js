@@ -6,15 +6,11 @@
 /* =========================================================
    CONFIG
 ========================================================= */
-const API_BASE =
-    "http://localhost:3000";
+const API_BASE = "http://localhost:3000";
 const API = {
-    profile:
-        `${API_BASE}/profile`,
-    dashboard:
-        `${API_BASE}/dashboard`,
-    sync:
-        `${API_BASE}/dashboard/sync`
+    profile: "/profile",
+    dashboard: "/dashboard",
+    sync: "/dashboard/sync"
 };
 /* =========================================================
    AUTH
@@ -71,57 +67,44 @@ function authHeaders(json = true) {
 /* =========================================================
    API FETCH
 ========================================================= */
-async function apiFetch(
-    url,
-    options = {}
-) {
-    const response =
-        await fetch(url, {
-            ...options,
-            headers: {
-                ...authHeaders(
-                    Boolean(options.body)
-                ),
-                ...(options.headers || {})
-            }
-        });
-    /* =====================================================
-       SESSION EXPIRED
-    ===================================================== */
+async function apiFetch(url, options = {}) {
+    const response = await fetch(url, {
+        ...options,
+        headers: {
+            ...authHeaders(Boolean(options.body)),
+            ...(options.headers || {})
+        }
+    });
+
     if (response.status === 401) {
         localStorage.removeItem("token");
         sessionStorage.removeItem("token");
-        window.location.href =
-            "login.html";
-        throw new Error(
-            "Session expired"
-        );
+
+        window.location.href = "login.html";
+        throw new Error("Session expired");
     }
-    /* =====================================================
-       READ RESPONSE
-    ===================================================== */
-    const text =
-        await response.text();
+
+    const text = await response.text();
+
     let data = {};
+
     try {
-        data =
-            text
-                ? JSON.parse(text)
-                : {};
-    } catch {
+        data = text ? JSON.parse(text) : {};
+    } catch (error) {
+        console.error("Invalid JSON response:", text);
+
         throw new Error(
             `Invalid server response (${response.status})`
         );
     }
-    /* =====================================================
-       API ERROR
-    ===================================================== */
+
     if (!response.ok) {
         throw new Error(
             data.message ||
             `Request failed (${response.status})`
         );
     }
+
     return data;
 }
 /* =========================================================
@@ -186,18 +169,16 @@ async function initializeDashboard() {
         /* ---------------------------------------------
            Load profile
         --------------------------------------------- */
-        const profile =
-            await loadProfile();
-        renderProfile(
-            profile
-        );
+        const profile = await loadProfile();
+        state.profile = profile;
+        renderProfile(profile);
         /* ---------------------------------------------
            Load dashboard
         --------------------------------------------- */
-        const dashboard =
-            await loadDashboard();
+        const dashboard = await loadDashboard();
         renderDashboard(
-            dashboard
+            dashboard,
+            profile
         );
         updateLastSync();
     } catch (error) {
