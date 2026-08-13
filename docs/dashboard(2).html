@@ -1,0 +1,2391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="CP Tracker Dashboard — Monitor your competitive programming journey."
+    >
+
+    <title>Dashboard | CP Tracker</title>
+
+    <!-- =========================
+         Fonts
+    ========================== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+    <!-- =========================
+         Icons
+    ========================== -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <!-- =========================
+         Chart.js
+    ========================== -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+    <!-- =========================================================
+         APP SHELL
+    ========================================================== -->
+
+    <div class="app-shell">
+
+        <!-- =====================================================
+             SIDEBAR
+        ====================================================== -->
+
+        <aside class="sidebar" id="sidebar">
+            <!-- Brand -->
+            <div class="sidebar-brand">
+                <a href="index.html" class="brand">
+                    <div class="brand-mark">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-name">CP</span>
+                        <span class="brand-name accent">Tracker</span>
+                    </div>
+                </a>
+                <button
+                    class="sidebar-collapse-btn"
+                    id="sidebarCollapseBtn"
+                    aria-label="Collapse sidebar"
+                >
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="sidebar-nav">
+
+                <div class="nav-section">
+
+                    <span class="nav-section-label">
+                        Workspace
+                    </span>
+
+                    <a href="dashboard.html" class="nav-item active">
+
+                        <span class="nav-icon">
+                            <i class="fa-solid fa-chart-pie"></i>
+                        </span>
+
+                        <span class="nav-label">
+                            Dashboard
+                        </span>
+
+                    </a>
+
+
+                    <a href="profile.html" class="nav-item">
+
+                        <span class="nav-icon">
+                            <i class="fa-regular fa-user"></i>
+                        </span>
+
+                        <span class="nav-label">
+                            Profile
+                        </span>
+
+                    </a>
+
+
+                    <a href="#" class="nav-item">
+
+                        <span class="nav-icon">
+                            <i class="fa-solid fa-code"></i>
+                        </span>
+
+                        <span class="nav-label">
+                            Problems
+                        </span>
+
+                    </a>
+
+
+                    <a href="#" class="nav-item">
+
+                        <span class="nav-icon">
+                            <i class="fa-solid fa-trophy"></i>
+                        </span>
+
+                        <span class="nav-label">
+                            Contests
+                        </span>
+
+                    </a>
+
+                </div>
+
+
+                <div class="nav-section">
+
+                    <span class="nav-section-label">
+                        Analytics
+                    </span>
+
+                    <a href="#" class="nav-item">
+
+                        <span class="nav-icon">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </span>
+
+                        <span class="nav-label">
+                            Performance
+                        </span>
+
+                    </a>
+
+
+                    <a href="#" class="nav-item">
+
+                        <span class="nav-icon">
+                            <i class="fa-solid fa-crosshairs"></i>
+                        </span>
+
+                        <span class="nav-label">
+                            Weakness
+                        </span>
+
+                    </a>
+
+
+                    <a href="#" class="nav-item">
+
+                        <span class="nav-icon">
+                            <i class="fa-solid fa-fire"></i>
+                        </span>
+
+                        <span class="nav-label">
+                            Activity
+                        </span>
+
+                    </a>
+
+                </div>
+
+
+                <div class="nav-section">
+
+                    <span class="nav-section-label">
+                        Personal
+                    </span>
+
+                    <a href="#" class="nav-item">
+
+                        <span class="nav-icon">
+                            <i class="fa-regular fa-bookmark"></i>
+                        </span>
+
+                        <span class="nav-label">
+                            Saved Problems
+                        </span>
+
+                    </a>
+
+
+                    <a href="#" class="nav-item">
+
+                        <span class="nav-icon">
+                            <i class="fa-solid fa-medal"></i>
+                        </span>
+
+                        <span class="nav-label">
+                            Achievements
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </nav>
+
+
+            <!-- Sidebar Bottom -->
+            <div class="sidebar-bottom">
+
+                <a href="#" class="nav-item">
+
+                    <span class="nav-icon">
+                        <i class="fa-solid fa-gear"></i>
+                    </span>
+
+                    <span class="nav-label">
+                        Settings
+                    </span>
+
+                </a>
+
+
+                <button class="sidebar-profile">
+
+                    <div class="sidebar-avatar">
+                        <img
+                            src="../assets/default-avatar.png"
+                            alt="Profile"
+                            id="sidebarAvatar"
+                        >
+                    </div>
+
+                    <div class="sidebar-user-info">
+
+                        <strong id="sidebarUserName">
+                            Saiful Islam
+                        </strong>
+
+                        <span id="sidebarUserHandle">
+                            @saiful
+                        </span>
+
+                    </div>
+
+                    <i class="fa-solid fa-ellipsis"></i>
+
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =====================================================
+             MAIN CONTENT
+        ====================================================== -->
+
+        <main class="main-content">
+
+            <!-- =================================================
+                 TOPBAR
+            ================================================== -->
+
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button
+                        class="mobile-menu-btn"
+                        id="mobileMenuBtn"
+                        aria-label="Open menu"
+                    >
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+
+
+                    <div class="breadcrumb">
+
+                        <span>Workspace</span>
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                        <strong>Dashboard</strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <!-- Search -->
+                    <button class="topbar-action search-trigger" id="searchTrigger">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <span>Search</span>
+
+                        <kbd>⌘ K</kbd>
+
+                    </button>
+
+
+                    <!-- Sync -->
+                    <button
+                        class="topbar-icon-btn"
+                        id="syncBtn"
+                        title="Sync data"
+                    >
+                        <i class="fa-solid fa-arrows-rotate"></i>
+                    </button>
+
+
+                    <!-- Notifications -->
+                    <button
+                        class="topbar-icon-btn notification-btn"
+                        id="notificationBtn"
+                        title="Notifications"
+                    >
+
+                        <i class="fa-regular fa-bell"></i>
+
+                        <span class="notification-dot"></span>
+
+                    </button>
+
+
+                    <!-- Profile -->
+                    <button class="topbar-profile" id="topbarProfile">
+
+                        <div class="topbar-avatar">
+
+                            <img
+                                src="../assets/default-avatar.png"
+                                alt="Profile"
+                                id="topbarAvatar"
+                            >
+
+                        </div>
+
+                        <div class="topbar-user">
+
+                            <strong id="topbarUserName">
+                                Saiful Islam
+                            </strong>
+
+                            <span id="topbarUserHandle">
+                                @saiful
+                            </span>
+
+                        </div>
+
+                        <i class="fa-solid fa-chevron-down"></i>
+
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- =================================================
+                 DASHBOARD BODY
+            ================================================== -->
+
+            <div class="dashboard-container">
+
+
+                <!-- =================================================
+                     HERO
+                ================================================== -->
+
+                <section class="dashboard-hero">
+
+                    <div class="hero-content">
+
+                        <div class="hero-eyebrow">
+
+                            <span class="status-indicator"></span>
+
+                            <span>
+                                Your performance is being tracked
+                            </span>
+
+                        </div>
+
+
+                        <h1>
+                            Good evening,
+                            <span id="heroUserName">Saiful</span>.
+                        </h1>
+
+
+                        <p>
+                            Keep pushing. Every problem you solve
+                            compounds into a stronger competitive programmer.
+                        </p>
+
+
+                        <div class="hero-meta">
+
+                            <div class="hero-meta-item">
+
+                                <span class="hero-meta-icon">
+                                    <i class="fa-solid fa-fire"></i>
+                                </span>
+
+                                <div>
+                                    <strong id="currentStreak">
+                                        12
+                                    </strong>
+
+                                    <span>
+                                        day streak
+                                    </span>
+                                </div>
+
+                            </div>
+
+
+                            <div class="hero-divider"></div>
+
+
+                            <div class="hero-meta-item">
+
+                                <span class="hero-meta-icon">
+                                    <i class="fa-solid fa-bullseye"></i>
+                                </span>
+
+                                <div>
+                                    <strong id="weeklyGoal">
+                                        78%
+                                    </strong>
+
+                                    <span>
+                                        weekly goal
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="hero-visual">
+
+                        <div class="hero-orb orb-one"></div>
+                        <div class="hero-orb orb-two"></div>
+
+                        <div class="hero-code-card">
+
+                            <div class="code-card-header">
+
+                                <span></span>
+                                <span></span>
+                                <span></span>
+
+                            </div>
+
+                            <div class="code-lines">
+
+                                <span>
+                                    <i>const</i>
+                                    progress
+                                    <b>=</b>
+                                    <em>∞</em>
+                                </span>
+
+                                <span>
+                                    <i>while</i>
+                                    (alive) {
+                                </span>
+
+                                <span class="indent">
+                                    solve(problem);
+                                </span>
+
+                                <span class="indent">
+                                    learn();
+                                </span>
+
+                                <span>
+                                    }
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     STAT CARDS
+                ================================================== -->
+
+                <section class="stats-grid">
+
+
+                    <!-- Current Rating -->
+                    <article class="stat-card">
+
+                        <div class="stat-card-top">
+
+                            <div class="stat-icon rating-icon">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+
+                            <span class="stat-period">
+                                Current
+                            </span>
+
+                        </div>
+
+                        <div class="stat-value" id="currentRating">
+                            1,234
+                        </div>
+
+                        <div class="stat-label">
+                            Current Rating
+                        </div>
+
+                        <div class="stat-change positive">
+
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+
+                            <span id="ratingChange">
+                                +48
+                            </span>
+
+                            <small>
+                                this month
+                            </small>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Highest Rating -->
+                    <article class="stat-card">
+
+                        <div class="stat-card-top">
+
+                            <div class="stat-icon peak-icon">
+                                <i class="fa-solid fa-arrow-up"></i>
+                            </div>
+
+                            <span class="stat-period">
+                                All time
+                            </span>
+
+                        </div>
+
+                        <div class="stat-value" id="highestRating">
+                            1,421
+                        </div>
+
+                        <div class="stat-label">
+                            Highest Rating
+                        </div>
+
+                        <div class="stat-subtle">
+                            Personal best
+                        </div>
+
+                    </article>
+
+
+                    <!-- Solved -->
+                    <article class="stat-card">
+
+                        <div class="stat-card-top">
+
+                            <div class="stat-icon solved-icon">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+
+                            <span class="stat-period">
+                                All time
+                            </span>
+
+                        </div>
+
+                        <div class="stat-value" id="totalSolved">
+                            1,284
+                        </div>
+
+                        <div class="stat-label">
+                            Problems Solved
+                        </div>
+
+                        <div class="stat-change positive">
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            <span id="solvedThisWeek">
+                                23
+                            </span>
+
+                            <small>
+                                this week
+                            </small>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Contests -->
+                    <article class="stat-card">
+
+                        <div class="stat-card-top">
+
+                            <div class="stat-icon contest-icon">
+                                <i class="fa-solid fa-trophy"></i>
+                            </div>
+
+                            <span class="stat-period">
+                                Total
+                            </span>
+
+                        </div>
+
+                        <div class="stat-value" id="contestCount">
+                            47
+                        </div>
+
+                        <div class="stat-label">
+                            Contests Participated
+                        </div>
+
+                        <div class="stat-subtle">
+                            68% rated
+                        </div>
+
+                    </article>
+
+
+                    <!-- Average Problem Rating -->
+                    <article class="stat-card featured-stat">
+
+                        <div class="stat-card-top">
+
+                            <div class="stat-icon avg-icon">
+                                <i class="fa-solid fa-chart-simple"></i>
+                            </div>
+
+                            <span class="stat-period">
+                                This month
+                            </span>
+
+                        </div>
+
+                        <div class="stat-value" id="averageProblemRating">
+                            1,387
+                        </div>
+
+                        <div class="stat-label">
+                            Avg. Solved Rating
+                        </div>
+
+                        <div class="stat-change positive">
+
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+
+                            <span id="averageRatingChange">
+                                +64
+                            </span>
+
+                            <small>
+                                vs previous
+                            </small>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <!-- =================================================
+                     MAIN ANALYTICS GRID
+                ================================================== -->
+
+                <section class="analytics-grid">
+
+
+                    <!-- =================================================
+                         RATING OVERVIEW
+                    ================================================== -->
+
+                    <article class="dashboard-card rating-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <span class="card-kicker">
+                                    PERFORMANCE
+                                </span>
+
+                                <h2>
+                                    Rating Evolution
+                                </h2>
+
+                                <p>
+                                    Track how your competitive rating has changed.
+                                </p>
+
+                            </div>
+
+
+                            <div class="chart-controls">
+
+                                <button
+                                    class="chart-filter active"
+                                    data-rating-period="month"
+                                >
+                                    1M
+                                </button>
+
+                                <button
+                                    class="chart-filter"
+                                    data-rating-period="3months"
+                                >
+                                    3M
+                                </button>
+
+                                <button
+                                    class="chart-filter"
+                                    data-rating-period="year"
+                                >
+                                    1Y
+                                </button>
+
+                                <button
+                                    class="chart-filter"
+                                    data-rating-period="all"
+                                >
+                                    ALL
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="rating-summary">
+
+                            <div>
+
+                                <span>
+                                    Current
+                                </span>
+
+                                <strong id="ratingChartCurrent">
+                                    1,234
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Peak
+                                </span>
+
+                                <strong id="ratingChartPeak">
+                                    1,421
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Change
+                                </span>
+
+                                <strong
+                                    class="positive"
+                                    id="ratingChartChange"
+                                >
+                                    +48
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="chart-container rating-chart-container">
+
+                            <canvas id="ratingChart"></canvas>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- =================================================
+                         TODAY'S FOCUS
+                    ================================================== -->
+
+                    <article class="dashboard-card focus-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <span class="card-kicker">
+                                    TODAY
+                                </span>
+
+                                <h2>
+                                    Today's Focus
+                                </h2>
+
+                            </div>
+
+                            <button
+                                class="icon-button"
+                                title="More"
+                            >
+                                <i class="fa-solid fa-ellipsis"></i>
+                            </button>
+
+                        </div>
+
+
+                        <div class="focus-progress">
+
+                            <div class="progress-ring">
+
+                                <svg viewBox="0 0 120 120">
+
+                                    <circle
+                                        class="progress-ring-bg"
+                                        cx="60"
+                                        cy="60"
+                                        r="50"
+                                    ></circle>
+
+                                    <circle
+                                        class="progress-ring-value"
+                                        cx="60"
+                                        cy="60"
+                                        r="50"
+                                        id="dailyProgressRing"
+                                    ></circle>
+
+                                </svg>
+
+                                <div class="progress-ring-text">
+
+                                    <strong id="dailyProgress">
+                                        68%
+                                    </strong>
+
+                                    <span>
+                                        complete
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="focus-info">
+
+                                <strong>
+                                    3 of 5 goals
+                                </strong>
+
+                                <span>
+                                    Keep the momentum going.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="focus-list">
+
+                            <label class="focus-item completed">
+
+                                <span class="focus-check">
+                                    <i class="fa-solid fa-check"></i>
+                                </span>
+
+                                <span class="focus-text">
+                                    Solve 2 problems
+                                </span>
+
+                            </label>
+
+
+                            <label class="focus-item completed">
+
+                                <span class="focus-check">
+                                    <i class="fa-solid fa-check"></i>
+                                </span>
+
+                                <span class="focus-text">
+                                    Practice greedy
+                                </span>
+
+                            </label>
+
+
+                            <label class="focus-item">
+
+                                <span class="focus-check"></span>
+
+                                <span class="focus-text">
+                                    Solve one 1400+ problem
+                                </span>
+
+                            </label>
+
+
+                            <label class="focus-item">
+
+                                <span class="focus-check"></span>
+
+                                <span class="focus-text">
+                                    Review yesterday's mistakes
+                                </span>
+
+                            </label>
+
+
+                            <label class="focus-item">
+
+                                <span class="focus-check"></span>
+
+                                <span class="focus-text">
+                                    30 min virtual contest
+                                </span>
+
+                            </label>
+
+                        </div>
+
+
+                        <button class="primary-button focus-button">
+
+                            <i class="fa-solid fa-play"></i>
+
+                            Start Practice
+
+                        </button>
+
+                    </article>
+
+                </section>
+
+
+                <!-- =================================================
+                     STATISTICS SUMMARY
+                ================================================== -->
+
+                <section class="dashboard-card statistics-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-kicker">
+                                OVERVIEW
+                            </span>
+
+                            <h2>
+                                Statistics Summary
+                            </h2>
+
+                            <p>
+                                A snapshot of your recent competitive programming activity.
+                            </p>
+
+                        </div>
+
+
+                        <div class="period-selector">
+
+                            <button
+                                class="period-option active"
+                                data-stat-period="week"
+                            >
+                                Week
+                            </button>
+
+                            <button
+                                class="period-option"
+                                data-stat-period="month"
+                            >
+                                Month
+                            </button>
+
+                            <button
+                                class="period-option"
+                                data-stat-period="year"
+                            >
+                                Year
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="statistics-grid">
+
+                        <div class="summary-metric">
+
+                            <div class="summary-metric-icon">
+                                <i class="fa-solid fa-code"></i>
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Problems Solved
+                                </span>
+
+                                <strong id="summarySolved">
+                                    23
+                                </strong>
+
+                                <small class="positive">
+                                    +18.4%
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="summary-metric">
+
+                            <div class="summary-metric-icon">
+                                <i class="fa-solid fa-stopwatch"></i>
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Avg. Solve Time
+                                </span>
+
+                                <strong id="summarySolveTime">
+                                    31m
+                                </strong>
+
+                                <small>
+                                    per problem
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="summary-metric">
+
+                            <div class="summary-metric-icon">
+                                <i class="fa-solid fa-rotate"></i>
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Avg. Attempts
+                                </span>
+
+                                <strong id="summaryAttempts">
+                                    1.64
+                                </strong>
+
+                                <small class="positive">
+                                    -8.2%
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="summary-metric">
+
+                            <div class="summary-metric-icon">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Avg. Problem Rating
+                                </span>
+
+                                <strong id="summaryRating">
+                                    1,387
+                                </strong>
+
+                                <small class="positive">
+                                    +64
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="summary-metric">
+
+                            <div class="summary-metric-icon">
+                                <i class="fa-solid fa-trophy"></i>
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Contest Rating Change
+                                </span>
+
+                                <strong id="summaryContestChange">
+                                    +48
+                                </strong>
+
+                                <small>
+                                    net change
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     AVERAGE SOLVED PROBLEM RATING
+                ================================================== -->
+
+                <section class="analytics-grid">
+
+
+                    <article class="dashboard-card avg-rating-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <span class="card-kicker">
+                                    DIFFICULTY
+                                </span>
+
+                                <h2>
+                                    Average Solved Problem Rating
+                                </h2>
+
+                                <p>
+                                    See how the difficulty of your solved problems is evolving.
+                                </p>
+
+                            </div>
+
+
+                            <div class="select-wrapper">
+
+                                <select id="averageRatingPeriod">
+
+                                    <option value="week">
+                                        Last Week
+                                    </option>
+
+                                    <option value="month" selected>
+                                        Last Month
+                                    </option>
+
+                                    <option value="year">
+                                        Last Year
+                                    </option>
+
+                                    <option value="custom">
+                                        Custom Range
+                                    </option>
+
+                                </select>
+
+                                <i class="fa-solid fa-chevron-down"></i>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="average-rating-main">
+
+                            <div class="average-rating-number">
+
+                                <span>
+                                    Average
+                                </span>
+
+                                <strong id="averageRatingValue">
+                                    1,387
+                                </strong>
+
+                                <div class="metric-trend positive">
+
+                                    <i class="fa-solid fa-arrow-trend-up"></i>
+
+                                    <span>
+                                        4.8%
+                                    </span>
+
+                                    <small>
+                                        from previous period
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="difficulty-distribution">
+
+                                <div class="difficulty-bar">
+
+                                    <span
+                                        class="difficulty-segment easy"
+                                        style="width: 18%"
+                                    ></span>
+
+                                    <span
+                                        class="difficulty-segment medium"
+                                        style="width: 42%"
+                                    ></span>
+
+                                    <span
+                                        class="difficulty-segment hard"
+                                        style="width: 30%"
+                                    ></span>
+
+                                    <span
+                                        class="difficulty-segment expert"
+                                        style="width: 10%"
+                                    ></span>
+
+                                </div>
+
+
+                                <div class="difficulty-legend">
+
+                                    <span>
+                                        <i class="legend-dot easy"></i>
+                                        &lt; 1000
+                                    </span>
+
+                                    <span>
+                                        <i class="legend-dot medium"></i>
+                                        1000–1400
+                                    </span>
+
+                                    <span>
+                                        <i class="legend-dot hard"></i>
+                                        1400–1800
+                                    </span>
+
+                                    <span>
+                                        <i class="legend-dot expert"></i>
+                                        1800+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="chart-container average-rating-chart-container">
+
+                            <canvas id="averageRatingChart"></canvas>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- =================================================
+                         WEAKNESS ANALYSIS
+                    ================================================== -->
+
+                    <article class="dashboard-card weakness-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <span class="card-kicker">
+                                    INSIGHT
+                                </span>
+
+                                <h2>
+                                    Weakness Analysis
+                                </h2>
+
+                                <p>
+                                    Average attempts needed by topic.
+                                </p>
+
+                            </div>
+
+
+                            <button class="text-button">
+
+                                Details
+
+                                <i class="fa-solid fa-arrow-right"></i>
+
+                            </button>
+
+                        </div>
+
+
+                        <div class="weakness-highlight">
+
+                            <div class="weakness-highlight-icon">
+
+                                <i class="fa-solid fa-crosshairs"></i>
+
+                            </div>
+
+                            <div>
+
+                                <span>
+                                    Biggest weakness
+                                </span>
+
+                                <strong id="weakestTopic">
+                                    Number Theory
+                                </strong>
+
+                                <small>
+                                    3.12 average attempts
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="weakness-list">
+
+
+                            <div class="weakness-row">
+
+                                <div class="weakness-topic">
+
+                                    <span class="topic-dot graph"></span>
+
+                                    <span>
+                                        Graphs
+                                    </span>
+
+                                </div>
+
+                                <div class="weakness-bar">
+
+                                    <span
+                                        style="width: 74%"
+                                    ></span>
+
+                                </div>
+
+                                <strong>
+                                    2.31
+                                </strong>
+
+                            </div>
+
+
+                            <div class="weakness-row">
+
+                                <div class="weakness-topic">
+
+                                    <span class="topic-dot dp"></span>
+
+                                    <span>
+                                        Dynamic Programming
+                                    </span>
+
+                                </div>
+
+                                <div class="weakness-bar">
+
+                                    <span
+                                        style="width: 91%"
+                                    ></span>
+
+                                </div>
+
+                                <strong>
+                                    2.84
+                                </strong>
+
+                            </div>
+
+
+                            <div class="weakness-row">
+
+                                <div class="weakness-topic">
+
+                                    <span class="topic-dot greedy"></span>
+
+                                    <span>
+                                        Greedy
+                                    </span>
+
+                                </div>
+
+                                <div class="weakness-bar">
+
+                                    <span
+                                        style="width: 57%"
+                                    ></span>
+
+                                </div>
+
+                                <strong>
+                                    1.76
+                                </strong>
+
+                            </div>
+
+
+                            <div class="weakness-row">
+
+                                <div class="weakness-topic">
+
+                                    <span class="topic-dot math"></span>
+
+                                    <span>
+                                        Number Theory
+                                    </span>
+
+                                </div>
+
+                                <div class="weakness-bar">
+
+                                    <span
+                                        style="width: 100%"
+                                    ></span>
+
+                                </div>
+
+                                <strong>
+                                    3.12
+                                </strong>
+
+                            </div>
+
+
+                            <div class="weakness-row">
+
+                                <div class="weakness-topic">
+
+                                    <span class="topic-dot strings"></span>
+
+                                    <span>
+                                        Strings
+                                    </span>
+
+                                </div>
+
+                                <div class="weakness-bar">
+
+                                    <span
+                                        style="width: 45%"
+                                    ></span>
+
+                                </div>
+
+                                <strong>
+                                    1.42
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <!-- =================================================
+                     ACTIVITY HEATMAP
+                ================================================== -->
+
+                <section class="dashboard-card activity-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="card-kicker">
+                                CONSISTENCY
+                            </span>
+
+                            <h2>
+                                Solving Activity
+                            </h2>
+
+                            <p>
+                                Your problem-solving consistency over time.
+                            </p>
+
+                        </div>
+
+
+                        <div class="activity-summary">
+
+                            <div>
+
+                                <strong id="activityTotal">
+                                    1,284
+                                </strong>
+
+                                <span>
+                                    total solves
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <strong id="activityLongestStreak">
+                                    32
+                                </strong>
+
+                                <span>
+                                    longest streak
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="heatmap-wrapper">
+
+                        <div class="heatmap-months">
+
+                            <span>Jan</span>
+                            <span>Feb</span>
+                            <span>Mar</span>
+                            <span>Apr</span>
+                            <span>May</span>
+                            <span>Jun</span>
+                            <span>Jul</span>
+                            <span>Aug</span>
+                            <span>Sep</span>
+                            <span>Oct</span>
+                            <span>Nov</span>
+                            <span>Dec</span>
+
+                        </div>
+
+
+                        <div class="heatmap-body">
+
+                            <div class="heatmap-days">
+
+                                <span>Mon</span>
+                                <span>Wed</span>
+                                <span>Fri</span>
+
+                            </div>
+
+
+                            <div
+                                class="heatmap-grid"
+                                id="heatmapGrid"
+                            ></div>
+
+                        </div>
+
+
+                        <div class="heatmap-footer">
+
+                            <span>
+                                Less
+                            </span>
+
+                            <span class="heat-level level-0"></span>
+                            <span class="heat-level level-1"></span>
+                            <span class="heat-level level-2"></span>
+                            <span class="heat-level level-3"></span>
+                            <span class="heat-level level-4"></span>
+
+                            <span>
+                                More
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     LOWER GRID
+                ================================================== -->
+
+                <section class="lower-dashboard-grid">
+
+
+                    <!-- =================================================
+                         UPCOMING CONTESTS
+                    ================================================== -->
+
+                    <article class="dashboard-card contests-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <span class="card-kicker">
+                                    UPCOMING
+                                </span>
+
+                                <h2>
+                                    Next Contests
+                                </h2>
+
+                            </div>
+
+                            <button class="text-button">
+
+                                View all
+
+                                <i class="fa-solid fa-arrow-right"></i>
+
+                            </button>
+
+                        </div>
+
+
+                        <div class="contest-list" id="contestList">
+
+
+                            <div class="contest-item">
+
+                                <div class="contest-platform cf">
+                                    CF
+                                </div>
+
+                                <div class="contest-info">
+
+                                    <strong>
+                                        Codeforces Round #1104
+                                    </strong>
+
+                                    <span>
+                                        Codeforces • Rated
+                                    </span>
+
+                                </div>
+
+                                <div class="contest-time">
+
+                                    <strong>
+                                        08h 42m
+                                    </strong>
+
+                                    <span>
+                                        starts in
+                                    </span>
+
+                                </div>
+
+                                <button class="contest-action">
+
+                                    <i class="fa-regular fa-bell"></i>
+
+                                </button>
+
+                            </div>
+
+
+                            <div class="contest-item">
+
+                                <div class="contest-platform ac">
+                                    AC
+                                </div>
+
+                                <div class="contest-info">
+
+                                    <strong>
+                                        AtCoder Beginner Contest 420
+                                    </strong>
+
+                                    <span>
+                                        AtCoder • Rated
+                                    </span>
+
+                                </div>
+
+                                <div class="contest-time">
+
+                                    <strong>
+                                        1d 14h
+                                    </strong>
+
+                                    <span>
+                                        starts in
+                                    </span>
+
+                                </div>
+
+                                <button class="contest-action">
+
+                                    <i class="fa-regular fa-bell"></i>
+
+                                </button>
+
+                            </div>
+
+
+                            <div class="contest-item">
+
+                                <div class="contest-platform cc">
+                                    CC
+                                </div>
+
+                                <div class="contest-info">
+
+                                    <strong>
+                                        Starters 210
+                                    </strong>
+
+                                    <span>
+                                        CodeChef • Rated
+                                    </span>
+
+                                </div>
+
+                                <div class="contest-time">
+
+                                    <strong>
+                                        2d 06h
+                                    </strong>
+
+                                    <span>
+                                        starts in
+                                    </span>
+
+                                </div>
+
+                                <button class="contest-action">
+
+                                    <i class="fa-regular fa-bell"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- =================================================
+                         RECENT ACTIVITY
+                    ================================================== -->
+
+                    <article class="dashboard-card recent-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <span class="card-kicker">
+                                    LIVE FEED
+                                </span>
+
+                                <h2>
+                                    Recent Activity
+                                </h2>
+
+                            </div>
+
+                            <button class="icon-button">
+
+                                <i class="fa-solid fa-ellipsis"></i>
+
+                            </button>
+
+                        </div>
+
+
+                        <div class="activity-feed">
+
+
+                            <div class="feed-item">
+
+                                <div class="feed-icon solved">
+
+                                    <i class="fa-solid fa-check"></i>
+
+                                </div>
+
+                                <div class="feed-content">
+
+                                    <strong>
+                                        Solved “Array Stabilization”
+                                    </strong>
+
+                                    <span>
+                                        Codeforces • 1200
+                                    </span>
+
+                                </div>
+
+                                <time>
+                                    12m
+                                </time>
+
+                            </div>
+
+
+                            <div class="feed-item">
+
+                                <div class="feed-icon rating">
+
+                                    <i class="fa-solid fa-arrow-trend-up"></i>
+
+                                </div>
+
+                                <div class="feed-content">
+
+                                    <strong>
+                                        Rating increased by 31
+                                    </strong>
+
+                                    <span>
+                                        Codeforces Round #1103
+                                    </span>
+
+                                </div>
+
+                                <time>
+                                    2h
+                                </time>
+
+                            </div>
+
+
+                            <div class="feed-item">
+
+                                <div class="feed-icon solved">
+
+                                    <i class="fa-solid fa-check"></i>
+
+                                </div>
+
+                                <div class="feed-content">
+
+                                    <strong>
+                                        Solved “Binary Tree”
+                                    </strong>
+
+                                    <span>
+                                        AtCoder • 1400
+                                    </span>
+
+                                </div>
+
+                                <time>
+                                    5h
+                                </time>
+
+                            </div>
+
+
+                            <div class="feed-item">
+
+                                <div class="feed-icon achievement">
+
+                                    <i class="fa-solid fa-medal"></i>
+
+                                </div>
+
+                                <div class="feed-content">
+
+                                    <strong>
+                                        Achievement unlocked
+                                    </strong>
+
+                                    <span>
+                                        30 Day Streak
+                                    </span>
+
+                                </div>
+
+                                <time>
+                                    1d
+                                </time>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- =================================================
+                         PRACTICE RECOMMENDATION
+                    ================================================== -->
+
+                    <article class="dashboard-card recommendation-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <span class="card-kicker">
+                                    RECOMMENDED
+                                </span>
+
+                                <h2>
+                                    Practice Next
+                                </h2>
+
+                            </div>
+
+                            <span class="smart-badge">
+
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                                Smart
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="recommendation-main">
+
+                            <div class="recommendation-topic">
+
+                                <span class="recommendation-topic-icon">
+                                    <i class="fa-solid fa-hashtag"></i>
+                                </span>
+
+                                <div>
+
+                                    <span>
+                                        Focus topic
+                                    </span>
+
+                                    <strong>
+                                        Number Theory
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <p>
+                                Your average attempts are highest here.
+                                A focused practice session could improve
+                                your success rate significantly.
+                            </p>
+
+
+                            <div class="recommendation-stats">
+
+                                <div>
+
+                                    <span>
+                                        Avg. tries
+                                    </span>
+
+                                    <strong>
+                                        3.12
+                                    </strong>
+
+                                </div>
+
+                                <div>
+
+                                    <span>
+                                        Success rate
+                                    </span>
+
+                                    <strong>
+                                        57%
+                                    </strong>
+
+                                </div>
+
+                                <div>
+
+                                    <span>
+                                        Recommended
+                                    </span>
+
+                                    <strong>
+                                        4 problems
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <button class="primary-button recommendation-button">
+
+                            Practice Number Theory
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </button>
+
+                    </article>
+
+
+                    <!-- =================================================
+                         ACHIEVEMENTS
+                    ================================================== -->
+
+                    <article class="dashboard-card achievements-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <span class="card-kicker">
+                                    MILESTONES
+                                </span>
+
+                                <h2>
+                                    Achievements
+                                </h2>
+
+                            </div>
+
+                            <button class="text-button">
+
+                                View all
+
+                                <i class="fa-solid fa-arrow-right"></i>
+
+                            </button>
+
+                        </div>
+
+
+                        <div class="achievement-grid">
+
+                            <div class="achievement-item unlocked">
+
+                                <div class="achievement-icon">
+                                    <i class="fa-solid fa-fire"></i>
+                                </div>
+
+                                <strong>
+                                    30 Day Streak
+                                </strong>
+
+                                <span>
+                                    Unlocked
+                                </span>
+
+                            </div>
+
+
+                            <div class="achievement-item unlocked">
+
+                                <div class="achievement-icon">
+                                    <i class="fa-solid fa-code"></i>
+                                </div>
+
+                                <strong>
+                                    1K Solved
+                                </strong>
+
+                                <span>
+                                    Unlocked
+                                </span>
+
+                            </div>
+
+
+                            <div class="achievement-item locked">
+
+                                <div class="achievement-icon">
+                                    <i class="fa-solid fa-crown"></i>
+                                </div>
+
+                                <strong>
+                                    Expert
+                                </strong>
+
+                                <span>
+                                    1,600 rating
+                                </span>
+
+                            </div>
+
+
+                            <div class="achievement-item locked">
+
+                                <div class="achievement-icon">
+                                    <i class="fa-solid fa-bolt"></i>
+                                </div>
+
+                                <strong>
+                                    50 Contest
+                                </strong>
+
+                                <span>
+                                    3 remaining
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <!-- =================================================
+                     FOOTER
+                ================================================== -->
+
+                <footer class="dashboard-footer">
+
+                    <span>
+                        CP Tracker
+                    </span>
+
+                    <span class="footer-separator">
+                        •
+                    </span>
+
+                    <span>
+                        Built for competitive programmers.
+                    </span>
+
+                    <span class="footer-spacer"></span>
+
+                    <span id="lastSynced">
+                        Last synced just now
+                    </span>
+
+                </footer>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <!-- =========================================================
+         SEARCH OVERLAY
+    ========================================================== -->
+
+    <div
+        class="search-overlay"
+        id="searchOverlay"
+        aria-hidden="true"
+    >
+
+        <div class="search-modal">
+
+            <div class="search-modal-header">
+
+                <div class="search-modal-title">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="text"
+                        id="globalSearch"
+                        placeholder="Search problems, contests, users..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+                <button
+                    class="search-close"
+                    id="searchClose"
+                >
+                    ESC
+                </button>
+
+            </div>
+
+
+            <div class="search-results" id="searchResults">
+
+                <div class="search-empty">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <strong>
+                        Search CP Tracker
+                    </strong>
+
+                    <span>
+                        Find problems, contests and profiles instantly.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         NOTIFICATION PANEL
+    ========================================================== -->
+
+    <div
+        class="notification-panel"
+        id="notificationPanel"
+    >
+
+        <div class="notification-header">
+
+            <div>
+
+                <span>
+                    Notifications
+                </span>
+
+                <strong>
+                    3 new
+                </strong>
+
+            </div>
+
+            <button>
+                Mark all read
+            </button>
+
+        </div>
+
+
+        <div class="notification-list">
+
+            <div class="notification-item unread">
+
+                <div class="notification-icon contest">
+
+                    <i class="fa-solid fa-trophy"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Contest starts soon
+                    </strong>
+
+                    <span>
+                        Codeforces Round #1104 begins in 8 hours.
+                    </span>
+
+                    <time>
+                        10m ago
+                    </time>
+
+                </div>
+
+            </div>
+
+
+            <div class="notification-item unread">
+
+                <div class="notification-icon insight">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        New performance insight
+                    </strong>
+
+                    <span>
+                        Your average problem rating increased this month.
+                    </span>
+
+                    <time>
+                        2h ago
+                    </time>
+
+                </div>
+
+            </div>
+
+
+            <div class="notification-item">
+
+                <div class="notification-icon achievement">
+
+                    <i class="fa-solid fa-medal"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Achievement unlocked
+                    </strong>
+
+                    <span>
+                        You completed a 30-day solving streak.
+                    </span>
+
+                    <time>
+                        Yesterday
+                    </time>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         MOBILE SIDEBAR BACKDROP
+    ========================================================== -->
+
+    <div
+        class="sidebar-backdrop"
+        id="sidebarBackdrop"
+    ></div>
+
+
+    <!-- =========================================================
+         DASHBOARD JS
+    ========================================================== -->
+
+    <script src="js/dashboard.js"></script>
+
+</body>
+
+</html>

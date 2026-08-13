@@ -7,11 +7,9 @@ const token =
 if (!token) {
     window.location.href = "login.html";
 }
-
 // ========================================
 // ELEMENTS
 // ========================================
-
 const fullNameInput = document.getElementById("fullNameInput");
 const usernameInput = document.getElementById("usernameInput");
 const emailInput = document.getElementById("emailInput");
@@ -31,12 +29,9 @@ const saveBtn = document.getElementById("saveBtn");
 const cancelBtn = document.getElementById("cancelBtn");
 const upload = document.getElementById("profileUpload");
 const changePhoto = document.getElementById("changePhoto");
-
-
 // ========================================
 // LOAD PROFILE
 // ========================================
-
 async function loadProfile() {
     try {
         const response = await fetch(
@@ -48,43 +43,26 @@ async function loadProfile() {
                 }
             }
         );
-
         const data = await response.json();
-
         if (!response.ok) {
             alert(data.message);
             window.location.href = "login.html";
             return;
         }
-
         const user = data.user;
-
         profileName.textContent = user.fullname;
-
         profileUsername.textContent = "@" + user.username;
-
         profileCountry.textContent = user.country || "Not Set";
-
         profileBio.textContent = user.bio || "No bio yet.";
-
         profileJoined.textContent = new Date(user.joined).toLocaleDateString();
-
         fullNameInput.value = user.fullname;
-
         usernameInput.value = user.username;
-
         emailInput.value = user.email;
-
         countryInput.value = user.country || "";
-
         institutionInput.value = user.institution || "";
-
         bioInput.value = user.bio || "";
-
         cfInput.value = user.cf || "";
-
         ccInput.value = user.cc || "";
-
         acInput.value = user.ac || "";
         if (user.profile_pic) {
           profileImage.src ="http://localhost:3000" + user.profile_pic;
@@ -94,20 +72,14 @@ async function loadProfile() {
         console.error(err);
         alert(err.message);
     }
-
 }
-
 loadProfile();
-
-
 // ========================================
 // CHANGE PHOTO
 // ========================================
-
 changePhoto.onclick = () => {
     upload.click();
 };
-
 upload.onchange = async () => {
     const file = upload.files[0];
     if (!file) return;
@@ -134,11 +106,9 @@ upload.onchange = async () => {
         alert(data.message);
     }
 };
-
 // ========================================
 // SAVE PROFILE
 // ========================================
-
 saveBtn.addEventListener("click", async () => {
     const profileData = {
         fullname: fullNameInput.value.trim(),
@@ -156,7 +126,6 @@ saveBtn.addEventListener("click", async () => {
     try {
         const response = await fetch(
             "http://localhost:3000/profile",
-
             {
                 method: "PUT",
                 headers: {
@@ -167,7 +136,6 @@ saveBtn.addEventListener("click", async () => {
                 body: JSON.stringify(profileData)
             }
         );
-
         const data = await response.json();
         console.log(response.status);
         console.log(data);
@@ -178,47 +146,32 @@ saveBtn.addEventListener("click", async () => {
         alert("Profile updated successfully.");
         loadProfile();
     }
-
     catch (err) {
       console.log(err);
       alert("Server error.");
     }
-
 });
-
-
 // ========================================
 // CANCEL
 // ========================================
-
 cancelBtn.addEventListener("click", () => {
     loadProfile();
 });
-
-
 // ========================================
 // AUTO UPDATE HEADER
 // ========================================
-
 fullNameInput.addEventListener("input", () => {
     profileName.textContent = fullNameInput.value;
 });
-
 countryInput.addEventListener("input", () => {
     profileCountry.textContent = countryInput.value || "Not Set";
-
 });
-
 bioInput.addEventListener("input", () => {
     profileBio.textContent = bioInput.value || "No bio yet.";
-
 });
-
-
 // ========================================
 // SAVE USER CACHE
 // ========================================
-
 async function refreshUserCache() {
     try {
       const response = await fetch(
@@ -236,18 +189,12 @@ async function refreshUserCache() {
     catch (err){
       console.log(err);
     }
-
 }
-
-
 // ========================================
 // AFTER SAVE
 // ========================================
-
 saveBtn.addEventListener("click", async () => {
-
     setTimeout(() => {
       refreshUserCache();
     }, 300);
-
 });
