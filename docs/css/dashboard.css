@@ -472,8 +472,7 @@ a {
    ========================================================= */
 .statistics-grid {
     display: grid;
-    grid-template-columns:
-        repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 10px;
 }
 .summary-metric {
@@ -2013,12 +2012,10 @@ a {
         gap: 15px;
     }
     .stats-grid {
-        grid-template-columns:
-            repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
     .statistics-grid {
-        grid-template-columns:
-            1fr 1fr;
+        grid-template-columns: 1fr 1fr;
     }
     .average-rating-main {
         grid-template-columns: 1fr;
@@ -2038,15 +2035,13 @@ a {
         grid-template-columns: 1fr 1fr;
     }
     .rating-analytics-stats {
-        grid-template-columns:
-            1fr 1fr;
+        grid-template-columns: 1fr 1fr;
     }
     .rating-history-chart {
         height: 250px;
     }
     .activity-item {
-        grid-template-columns:
-            40px 1fr;
+        grid-template-columns: 40px 1fr;
     }
     .activity-status {
         display: none;

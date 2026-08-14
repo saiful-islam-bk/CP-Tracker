@@ -116,66 +116,22 @@ async function safeFetch(fn, fallback = null) {
 // =========================================================
 // CODEFORCES
 // =========================================================
-async function getAllCodeforcesSubmissions(handle) {
-    if(!handle) return [];
-    const allSubmissions = [];
-    const COUNT = 10000;
-    let from = 1;
-    while (true) {
-        const data = await safeFetch(
-            () =>
-                fetchJSON(
-                    `${CF_API}/user.status?handle=${encodeURIComponent(handle)}&from=${from}&count=${COUNT}`
-                ),
-            null
-        );
-        if (!data || data.status !== "OK" || !Array.isArray(data.result)) {
-            break;
-        }
-        const batch = data.result || [];
-        allSubmissions.push(...batch);
-        console.log(
-            `CF submissions fetched: ${allSubmissions.length}`
-        );
-        if (batch.length < COUNT) {
-            break;
-        }
-        from += COUNT;
-        await new Promise(
-            resolve => setTimeout(resolve, 2100)
-        );
-    }
-    return allSubmissions;
-}
 async function getCodeforcesData(handle) {
-    // ============================================
-    // NO CODEFORCES HANDLE
-    // ============================================
     if (!handle) {
+        console.log("CF: No handle provided");
         return {
             connected: false,
             profile: null,
             ratingHistory: [],
-            submissions: [],
-            profileStats: {
-                solvedAllTime: 0,
-                solvedLastYear: 0,
-                solvedLastMonth: 0,
-                maxStreak: 0,
-                streakLastYear: 0,
-                streakLastMonth: 0,
-                currentStreak: 0
-            }
+            submissions: []
         };
     }
+    console.log("CF: Fetching handle =", handle);
     const encodedHandle = encodeURIComponent(handle);
-    // ============================================
-    // FETCH CF DATA
-    // ============================================
     const [
         infoResponse,
         ratingResponse,
-        submissions
+        submissionResponse
     ] = await Promise.all([
         safeFetch(
             () =>
@@ -191,228 +147,49 @@ async function getCodeforcesData(handle) {
                 ),
             null
         ),
-        getAllCodeforcesSubmissions(handle)
+        safeFetch(
+            () =>
+                fetchJSON(
+                    `${CF_API}/user.status?handle=${encodedHandle}&from=1&count=10000`
+                ),
+            null
+        )
     ]);
-    // ============================================
-    // PROFILE
-    // ============================================
+     console.log(
+        "CF INFO:",
+        infoResponse?.status,
+        infoResponse?.comment || ""
+    );
+
+    console.log(
+        "CF RATING:",
+        ratingResponse?.status,
+        ratingResponse?.comment || ""
+    );
+
+    console.log(
+        "CF SUBMISSIONS:",
+        submissionResponse?.status,
+        submissionResponse?.comment || ""
+    );
+    
     const profile =
         infoResponse?.status === "OK"
             ? infoResponse.result?.[0] || null
             : null;
-    // ============================================
-    // RATING HISTORY
-    // ============================================
     const ratingHistory =
         ratingResponse?.status === "OK"
             ? ratingResponse.result || []
             : [];
-    // ============================================
-    // VALID SUBMISSIONS
-    // ============================================
-    const validSubmissions =
-        Array.isArray(submissions)
-            ? submissions
+    const submissions =
+        submissionResponse?.status === "OK"
+            ? submissionResponse.result || []
             : [];
-    // ============================================
-    // SOLVED PROBLEMS
-    // ============================================
-    const solvedMap = new Map();
-    for (const submission of validSubmissions) {
-        if (submission.verdict !== "OK") {
-            continue;
-        }
-        const problem = submission.problem || {};
-        const contestId = problem.contestId;
-        const index = problem.index;
-        const problemKey =
-            contestId !== undefined
-                ? `${contestId}-${index}`
-                : `${problem.name || "unknown"}-${problemKeySafe(problem)}`;
-        const timestamp =
-            Number(
-                submission.creationTimeSeconds || 0
-            );
-        if (!timestamp) {
-            continue;
-        }
-        // Only count each problem once
-        if (!solvedMap.has(problemKey)) {
-            solvedMap.set(
-                problemKey,
-                timestamp
-            );
-        }
-    }
-    // ============================================
-    // TIME LIMITS
-    // ============================================
-    const now = Date.now();
-    const oneMonthAgo =
-        now - 30 * 24 * 60 * 60 * 1000;
-    const oneYearAgo =
-        now - 365 * 24 * 60 * 60 * 1000;
-    // ============================================
-    // SOLVED COUNTS + SOLVED DATES
-    // ============================================
-    let solvedLastMonth = 0;
-    let solvedLastYear = 0;
-    const solvedDates = new Set();
-    for (const timestamp of solvedMap.values()) {
-        const time = timestamp * 1000;
-        if (time >= oneMonthAgo) {
-            solvedLastMonth++;
-        }
-        if (time >= oneYearAgo) {
-            solvedLastYear++;
-        }
-        const date =
-            new Date(time)
-                .toISOString()
-                .slice(0, 10);
-        solvedDates.add(date);
-    }
-    // ============================================
-    // LONGEST STREAK
-    // ============================================
-    const sortedDates =
-        [...solvedDates].sort();
-    let longestStreak = 0;
-    let currentStreak = 0;
-    let previousDate = null;
-    for (const dateString of sortedDates) {
-        const date = new Date(dateString);
-        if (!previousDate) {
-            currentStreak = 1;
-        } else {
-            const diff =
-                Math.round(
-                    (date - previousDate) / 86400000
-                );
-            if (diff === 1) {
-                currentStreak++;
-            } else {
-                currentStreak = 1;
-            }
-        }
-        longestStreak =
-            Math.max(
-                longestStreak,
-                currentStreak
-            );
-        previousDate = date;
-    }
-    // ============================================
-    // CURRENT STREAK
-    // ============================================
-    let currentStreakValue = 0;
-    const today = new Date();
-    today.setHours(
-        0,
-        0,
-        0,
-        0
-    );
-    while (true) {
-        const dateKey =
-            today.toISOString().slice(0, 10);
-        if (!solvedDates.has(dateKey)) {
-            break;
-        }
-        currentStreakValue++;
-        today.setDate(
-            today.getDate() - 1
-        );
-    }
-    // ============================================
-    // LAST YEAR STREAK
-    // ============================================
-    let streakLastYear = 0;
-    const yearDates =
-        sortedDates.filter(date => {
-            const time =
-                new Date(date).getTime();
-            return time >= oneYearAgo;
-        });
-    let tempStreak = 0;
-    let previousYearDate = null;
-    for (const dateString of yearDates) {
-        const date = new Date(dateString);
-        if (!previousYearDate) {
-            tempStreak = 1;
-        } else {
-            const diff =
-                Math.round(
-                    (date - previousYearDate) / 86400000
-                );
-            if (diff === 1) {
-                tempStreak++;
-            } else {
-                tempStreak = 1;
-            }
-        }
-        streakLastYear =
-            Math.max(
-                streakLastYear,
-                tempStreak
-            );
-        previousYearDate = date;
-    }
-    // ============================================
-    // LAST MONTH STREAK
-    // ============================================
-    let streakLastMonth = 0;
-    const monthDates =
-        sortedDates.filter(date => {
-            const time =
-                new Date(date).getTime();
-            return time >= oneMonthAgo;
-        });
-    tempStreak = 0;
-    let previousMonthDate = null;
-    for (const dateString of monthDates) {
-        const date = new Date(dateString);
-        if (!previousMonthDate) {
-            tempStreak = 1;
-        } else {
-            const diff =
-                Math.round(
-                    (date - previousMonthDate) / 86400000
-                );
-            if (diff === 1) {
-                tempStreak++;
-            } else {
-                tempStreak = 1;
-            }
-        }
-        streakLastMonth =
-            Math.max(
-                streakLastMonth,
-                tempStreak
-            );
-        previousMonthDate = date;
-    }
-    // ============================================
-    // PROFILE STATISTICS
-    // ============================================
-    const profileStats = {
-        solvedAllTime: solvedMap.size,
-        solvedLastYear,
-        solvedLastMonth,
-        maxStreak: longestStreak,
-        streakLastYear,
-        streakLastMonth,
-        currentStreak: currentStreakValue
-    };
-    // ============================================
-    // RETURN
-    // ============================================
     return {
         connected: !!profile,
         profile,
         ratingHistory,
-        submissions: validSubmissions,
-        profileStats
+        submissions
     };
 }
 // =========================================================
@@ -492,20 +269,18 @@ async function getCodeChefData(handle) {
     if (!handle) {
         return {
             connected: false,
-            profile: null,
-            ratingHistory: [],
-            submissions: [],
-            profileStats: {
-                solvedAllTime: 0,
-                solvedLastYear: 0,
-                solvedLastMonth: 0,
-                maxStreak: 0,
-                streakLastYear: 0,
-                streakLastMonth: 0
-            }
+            profile: null
         };
     }
-    const encodedHandle = encodeURIComponent(handle);
+    const encodedHandle =
+        encodeURIComponent(handle);
+    /*
+     * CodeChef does not expose a public profile API
+     * comparable to Codeforces.
+     *
+     * We try the commonly available public profile
+     * endpoint first.
+     */
     const profile = await safeFetch(
         () =>
             fetchJSON(
@@ -547,9 +322,12 @@ function analyzeCodeforcesSubmissions(
     const activities = [];
     for (const submission of submissions) {
         totalAttempts++;
-        const problem = submission.problem || {};
-        const contestId = problem.contestId;
-        const index = problem.index;
+        const problem =
+            submission.problem || {};
+        const contestId =
+            problem.contestId;
+        const index =
+            problem.index;
         const problemKey =
             contestId !== undefined
                 ? `${contestId}-${index}`
@@ -560,8 +338,10 @@ function analyzeCodeforcesSubmissions(
                     submission.creationTimeSeconds
                 ) * 1000
             );
-        const dateKey = date.toISOString().slice(0, 10);
-        const rating = Number(problem.rating || 0 || undefined);
+        const dateKey =
+            date.toISOString().slice(0, 10);
+        const rating =
+            Number(problem.rating || 0);
         const language =
             normalizeLanguage(
                 submission.programmingLanguage
@@ -573,12 +353,17 @@ function analyzeCodeforcesSubmissions(
         if (submission.verdict === "OK") {
             acceptedAttempts++;
             if (!solvedMap.has(problemKey)) {
-                solvedMap.set(problemKey,
+                solvedMap.set(
+                    problemKey,
                     {
-                        name: problem.name || "Unknown Problem",
+                        name:
+                            problem.name ||
+                            "Unknown Problem",
                         rating,
-                        date: date.toISOString(),
-                        tags: problem.tags || [],
+                        date:
+                            date.toISOString(),
+                        tags:
+                            problem.tags || [],
                         language,
                         url:
                             contestId !== undefined
@@ -627,10 +412,15 @@ function analyzeCodeforcesSubmissions(
                  * Recent activity
                  */
                 activities.push({
-                    platform: "Codeforces",
-                    problem: problem.name || "Solved Problem",
-                    rating: rating || null,
-                    time: date.toISOString(),
+                    platform:
+                        "Codeforces",
+                    problem:
+                        problem.name ||
+                        "Solved Problem",
+                    rating:
+                        rating || null,
+                    time:
+                        date.toISOString(),
                     url:
                         contestId !== undefined
                             ? `https://codeforces.com/contest/${contestId}/problem/${index}`
@@ -703,7 +493,8 @@ function analyzeCodeforcesSubmissions(
                     count
                 })
             );
-    const solved = solvedMap.size;
+    const solved =
+        solvedMap.size;
     const averageProblemRating =
         ratedProblemCount
             ? Math.round(
@@ -718,7 +509,8 @@ function analyzeCodeforcesSubmissions(
         averageProblemRating,
         difficulty,
         topics,
-        languages: languageStatsArray,
+        languages:
+            languageStatsArray,
         activity,
         heatmap
     };
@@ -829,12 +621,18 @@ function buildRatingAnalytics(
      * This is intentionally presented as
      * an estimate, not an AI prediction.
      */
-    const recent = values.slice(-5);
-    let prediction = currentRating;
+    const recent =
+        values.slice(-5);
+    let prediction =
+        currentRating;
     if (recent.length >= 2) {
-        const first = recent[0];
-        const last = recent[recent.length - 1];
-        const trend = (last - first) / (recent.length - 1);
+        const first =
+            recent[0];
+        const last =
+            recent[recent.length - 1];
+        const trend =
+            (last - first) /
+            (recent.length - 1);
         prediction =
             Math.round(
                 currentRating +
@@ -961,6 +759,9 @@ async function getAtCoderContests() {
                 `${ATCODER_API}/contests/${id}/`
         });
     }
+    /*
+     * Remove duplicates.
+     */
     const seen =
         new Set();
     return contests.filter(
@@ -1088,224 +889,6 @@ async function getUser(req) {
     return users[0];
 }
 // =========================================================
-// ACTIVITY HEATMAP
-// =========================================================
-function buildHeatmap(heatmapMap) {
-    const heatmap = [];
-    for (const [date, count] of heatmapMap.entries()) {
-        heatmap.push({
-            date,
-            count: Number(count || 0)
-        });
-    }
-    return heatmap.sort(
-        (a, b) =>
-            new Date(a.date) -
-            new Date(b.date)
-    );
-}
-function renderHeatmap(heatmapData) {
-    const grid = document.getElementById("heatmapGrid");
-    const monthsContainer = document.getElementById("heatmapMonths");
-    if (!grid || !monthsContainer) return;
-    grid.innerHTML = "";
-    monthsContainer.innerHTML = "";
-    const dataMap = new Map();
-    if (Array.isArray(heatmapData)) {
-        heatmapData.forEach(item => {
-            dataMap.set(
-                item.date,
-                Number(item.count || 0)
-            );
-        });
-    }
-    // ============================================
-    // LAST 365 DAYS
-    // ============================================
-    const endDate = new Date();
-    endDate.setHours(0, 0, 0, 0);
-    const startDate = new Date(endDate);
-    startDate.setDate(
-        startDate.getDate() - 364
-    );
-    // ============================================
-    // ALIGN START TO SUNDAY
-    // ============================================
-    const firstDay = new Date(startDate);
-    firstDay.setDate(
-        firstDay.getDate() - firstDay.getDay()
-    );
-    // ============================================
-    // CREATE WEEK COLUMNS
-    // ============================================
-    const weeks = [];
-    let current = new Date(firstDay);
-    while (current <= endDate) {
-        const week = [];
-        for (let i = 0; i < 7; i++) {
-            const date = new Date(current);
-            date.setDate(
-                current.getDate() + i
-            );
-            week.push(date);
-        }
-        weeks.push(week);
-        current.setDate(
-            current.getDate() + 7
-        );
-    }
-    // ============================================
-    // MAX SOLVES
-    // ============================================
-    let maxCount = 0;
-    for (const count of dataMap.values()) {
-        maxCount = Math.max(maxCount, count);
-    }
-    // ============================================
-    // CREATE CELLS
-    // ============================================
-    weeks.forEach(week => {
-        const column =
-            document.createElement("div");
-        column.className =
-            "heatmap-week";
-        week.forEach(date => {
-            const year =
-                date.getFullYear();
-            const month =
-                String(
-                    date.getMonth() + 1
-                ).padStart(2, "0");
-            const day =
-                String(
-                    date.getDate()
-                ).padStart(2, "0");
-            const dateKey =
-                `${year}-${month}-${day}`;
-            const count =
-                dataMap.get(dateKey) || 0;
-            const cell =
-                document.createElement("div");
-            cell.className =
-                "heatmap-cell";
-            // ====================================
-            // NO SOLVE = WHITE
-            // ====================================
-            if (count === 0) {
-                cell.classList.add(
-                    "level-0"
-                );
-            }
-            // ====================================
-            // SOLVES
-            // ====================================
-            else {
-                const ratio =
-                    maxCount > 0
-                        ? count / maxCount
-                        : 0;
-                if (ratio <= 0.25) {
-                    cell.classList.add(
-                        "level-1"
-                    );
-                } else if (ratio <= 0.50) {
-                    cell.classList.add(
-                        "level-2"
-                    );
-                } else if (ratio <= 0.75) {
-                    cell.classList.add(
-                        "level-3"
-                    );
-                } else {
-                    cell.classList.add(
-                        "level-4"
-                    );
-                }
-            }
-            // ====================================
-            // TOOLTIP
-            // ====================================
-            cell.dataset.date =
-                dateKey;
-            cell.dataset.count =
-                count;
-            cell.title =
-                count === 0
-                    ? `${dateKey}: No solves`
-                    : `${dateKey}: ${count} problem${count > 1 ? "s" : ""} solved`;
-            column.appendChild(cell);
-        });
-        grid.appendChild(column);
-    });
-    // ============================================
-    // DYNAMIC MONTH LABELS
-    // LAST 12 MONTHS ONLY
-    // ============================================
-    let lastMonthKey = "";
-    weeks.forEach((week, index) => {
-        const visibleDate =
-            week.find(date =>
-                date >= startDate &&
-                date <= endDate
-            );
-        if (!visibleDate) return;
-        const monthKey =  `${visibleDate.getFullYear()}-${visibleDate.getMonth()}`;
-        if (monthKey === lastMonthKey) {
-            return;
-        }
-        const label = document.createElement("span");
-        label.textContent =
-            visibleDate.toLocaleString(
-                "en-US",
-                {
-                    month: "short"
-                }
-            );
-        label.style.gridColumn = index + 1;
-        monthsContainer.appendChild(label);
-        lastMonthKey = monthKey;
-    });
-    // ============================================
-    // TOTAL SOLVES
-    // ============================================
-    const total =
-        [...dataMap.values()]
-            .reduce(
-                (sum, count) =>
-                    sum + count,
-                0
-            );
-    const totalElement =
-        document.getElementById(
-            "activityTotal"
-        );
-    if (totalElement) {
-        totalElement.textContent = total.toLocaleString();
-    }
-}
-function formatHeatmapDate(date) {
-    const year = date.getFullYear();
-    const month =
-        String(
-            date.getMonth() + 1
-        ).padStart(2, "0");
-    const day =
-        String(
-            date.getDate()
-        ).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-}
-function formatHeatmapReadableDate(date) {
-    return date.toLocaleDateString(
-        "en-US",
-        {
-            month: "short",
-            day: "numeric",
-            year: "numeric"
-        }
-    );
-}
-// =========================================================
 // BUILD DASHBOARD
 // =========================================================
 async function buildDashboard(req) {
@@ -1318,13 +901,15 @@ async function buildDashboard(req) {
     }
     const cfHandle = String(user.cf || "").trim();
     const ccHandle = String(user.cc || "").trim();
-    const acHandle =  String(user.ac || "").trim();
-    console.log("=================================");
-    console.log("DASHBOARD USER:", user.username);
-    console.log("CF HANDLE:", cfHandle);
-    console.log("CC HANDLE:", ccHandle);
-    console.log("AC HANDLE:", acHandle);
-    console.log("=================================");
+    const acHandle = String(user.ac || "").trim();
+
+        console.log("=================================");
+        console.log("DASHBOARD USER:", user.username);
+        console.log("CF HANDLE:", cfHandle);
+        console.log("CC HANDLE:", ccHandle);
+        console.log("AC HANDLE:", acHandle);
+        console.log("=================================");
+
     /*
      * Fetch all platforms concurrently.
      */
@@ -1377,13 +962,17 @@ async function buildDashboard(req) {
     /*
      * Total solved.
      */
-    const cfProfileStats = cf.profileStats || {};
-    const totalSolved = cf.profileStats?.solvedAllTime || cfAnalytics.solved;
+    const totalSolved =
+        cfAnalytics.solved;
     /*
      * Last 7 days.
      */
-    const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
-    const monthAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
+    const weekAgo =
+        Date.now() -
+        7 * 24 * 60 * 60 * 1000;
+    const monthAgo =
+        Date.now() -
+        30 * 24 * 60 * 60 * 1000;
     const solvedThisWeek =
         cfAnalytics.activity.filter(
             item =>
@@ -1438,7 +1027,6 @@ async function buildDashboard(req) {
                 ]
             )
         );
-    const heatmap = buildHeatmap(heatmapMap);
     const currentStreak =
         calculateCurrentStreak(
             heatmapMap
@@ -1456,7 +1044,9 @@ async function buildDashboard(req) {
         Math.min(
             100,
             Math.round(
-                solvedThisWeek / 5 * 100
+                solvedThisWeek /
+                5 *
+                100
             )
         );
     /*
@@ -1467,49 +1057,66 @@ async function buildDashboard(req) {
     /*
      * Language statistics.
      */
-    const languages = cfAnalytics.languages;
+    const languages =
+        cfAnalytics.languages;
     /*
      * Recent activities.
      */
-    const activity = cfAnalytics.activity;
+    const activity =
+        cfAnalytics.activity;
     /*
      * Rating summary.
      */
     const ratingSummary = {
-        current: currentRating,
-        peak: highestRating,
-        change: ratingChange,
-        rank: cf.profile?.rank || "Unrated",
-        globalRank: cf.profile?.rank? cf.profile.rank : null
+        current:
+            currentRating,
+        peak:
+            highestRating,
+        change:
+            ratingChange,
+        rank:
+            cf.profile?.rank || "Unrated",
+        globalRank:
+            cf.profile?.rank
+                ? cf.profile.rank
+                : null
     };
     /*
      * User object.
      */
     const userData = {
-        id: user.id,
-        name: user.fullname || user.username,
+        id:
+            user.id,
+        name:
+            user.fullname ||
+            user.username,
         firstName:
             (
                 user.fullname ||
                 user.username ||
                 "User"
             ).split(" ")[0],
-        username: user.username,
-        handle: {
-            cf: cfHandle,
-            cc: ccHandle,
-            ac: acHandle,
-        },
-        avatar: user.profile_pic || null
+        username:
+            user.username,
+        handle:
+            cfHandle,
+        cfHandle,
+        ccHandle,
+        acHandle,
+        avatar:
+            user.profile_pic || null
     };
     /*
      * Platform information.
      */
     const platforms = {
         codeforces: {
-            connected: cf.connected,
-            handle: cfHandle,
-            rating: currentRating,
+            connected:
+                cf.connected,
+            handle:
+                cfHandle,
+            rating:
+                currentRating,
             highestRating,
             rank:
                 cf.profile?.rank ||
@@ -1519,15 +1126,24 @@ async function buildDashboard(req) {
                 null
         },
         codechef: {
-            connected: cc.connected,
-            handle: ccHandle,
-            profile: cc.profile
+            connected:
+                cc.connected,
+            handle:
+                ccHandle,
+            profile:
+                cc.profile
         },
         atcoder: {
-            connected: ac.connected,
-            handle: acHandle,
-            rating: ac.profile?.rating || 0,
-            highestRating: ac.profile?.highestRating || 0
+            connected:
+                ac.connected,
+            handle:
+                acHandle,
+            rating:
+                ac.profile?.rating ||
+                0,
+            highestRating:
+                ac.profile?.highestRating ||
+                0
         }
     };
     /*
@@ -1535,7 +1151,7 @@ async function buildDashboard(req) {
      */
     const monthlyProgress =
         buildMonthlyProgress(
-            heatmap
+            cfAnalytics.heatmap
         );
     /*
      * Difficulty data.
@@ -1572,11 +1188,6 @@ async function buildDashboard(req) {
             highestRating,
             totalSolved,
             solvedThisWeek,
-            solvedLastYear: cfProfileStats.solvedLastYear || 0,
-            solvedLastMonth: cfProfileStats.solvedLastMonth || 0,
-            maxStreak: cfProfileStats.maxStreak || 0,
-            streakLastYear: cfProfileStats.streakLastYear || 0,
-            streakLastMonth: cfProfileStats.streakLastMonth || 0,
             contestCount,
             ratedContestPercentage:
                 contestCount
@@ -1584,7 +1195,8 @@ async function buildDashboard(req) {
                     : 0,
             ratingChange,
             averageProblemRating,
-            averageRatingChange: averageProblemRating,
+            averageRatingChange:
+                averageProblemRating,
             currentStreak,
             longestStreak,
             weeklyGoal
@@ -1623,11 +1235,16 @@ async function buildDashboard(req) {
         problemHistory:
             activity.map(
                 item => ({
-                    date: item.time,
-                    rating: item.rating || 0,
-                    problem: item.problem,
-                    platform: item.platform,
-                    language: item.language
+                    date:
+                        item.time,
+                    rating:
+                        item.rating || 0,
+                    problem:
+                        item.problem,
+                    platform:
+                        item.platform,
+                    language:
+                        item.language
                 })
             ),
         problemAnalytics: {
@@ -1637,31 +1254,44 @@ async function buildDashboard(req) {
             languages,
             monthlyProgress,
             averageProblemRating,
-            totalAttempts: cfAnalytics.totalAttempts,
-            acceptedAttempts: cfAnalytics.acceptedAttempts
+            totalAttempts:
+                cfAnalytics.totalAttempts,
+            acceptedAttempts:
+                cfAnalytics.acceptedAttempts
         },
         topics,
         difficulty,
         languages,
         monthlyProgress,
         activity,
-        heatmap: heatmap,
+        heatmap:
+            cfAnalytics.heatmap,
         contests,
         contestHistory:
             cfRating.history.map(
                 item => ({
-                    contestName: item.contestName,
-                    date: item.date,
-                    rank: item.rank,
-                    oldRating: item.rating - item.change,
-                    newRating: item.rating,
-                    ratingChange: item.change
+                    contestName:
+                        item.contestName,
+                    date:
+                        item.date,
+                    rank:
+                        item.rank,
+                    oldRating:
+                        item.rating -
+                        item.change,
+                    newRating:
+                        item.rating,
+                    ratingChange:
+                        item.change
                 })
             ),
         syncStatus: {
-            codeforces: cf.connected,
-            codechef: cc.connected,
-            atcoder: ac.connected
+            codeforces:
+                cf.connected,
+            codechef:
+                cc.connected,
+            atcoder:
+                ac.connected
         }
     };
 }
@@ -1788,16 +1418,8 @@ router.get(
     verifyToken,
     async (req, res) => {
         try {
-            const dashboard = await buildDashboard(req);
-            console.log("=================================");
-            console.log("DASHBOARD DATA CHECK");
-            console.log("CF HANDLE:", dashboard.handles.cf);
-            console.log("CURRENT RATING:", dashboard.stats.currentRating);
-            console.log("HIGHEST RATING:", dashboard.stats.highestRating);
-            console.log("TOTAL SOLVED:", dashboard.stats.totalSolved);
-            console.log("RATING HISTORY:", dashboard.ratingHistory.length);
-            console.log("ACTIVITY:", dashboard.activity.length);
-            console.log("=================================");
+            const dashboard =
+                await buildDashboard(req);
             return res.json(
                 dashboard
             );

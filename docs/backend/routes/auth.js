@@ -258,18 +258,14 @@ router.post(
                         "Invalid username/email or password"
                 });
             }
-            const token =
-                jwt.sign(
+            const token = jwt.sign(
                     {
-                        id:
-                            user.id,
-                        username:
-                            user.username
+                        id: user.id,
+                        username: user.username
                     },
                     process.env.JWT_SECRET,
                     {
-                        expiresIn:
-                            "7d"
+                        expiresIn: "7d"
                     }
                 );
             delete user.password;

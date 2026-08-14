@@ -205,26 +205,13 @@
                                         <small id="summarySolvedChange">--</small>
                                     </div>
                                 </div>
-                                <!-- Average Solve Time -->
-                                <div class="summary-metric">
-                                    <div class="summary-metric-icon">
-                                        <i class="fa-solid fa-stopwatch"></i>
-                                    </div>
-                                    <div>
-                                        <span>Avg. Solve Time</span>
-                                        <strong id="summarySolveTime">
-                                            0m
-                                        </strong>
-                                        <small>per problem</small>
-                                    </div>
-                                </div>
-                                <!-- Average Attempts -->
+                                <!-- Total Attempts -->
                                 <div class="summary-metric">
                                     <div class="summary-metric-icon">
                                         <i class="fa-solid fa-rotate"></i>
                                     </div>
                                     <div>
-                                        <span>Avg. Attempts</span>
+                                        <span>Total Attempts</span>
                                         <strong id="summaryAttempts">
                                             0.00
                                         </strong>
@@ -251,9 +238,7 @@
                                     </div>
                                     <div>
                                         <span>Contest Rating Change</span>
-                                        <strong id="summaryContestChange">
-                                            0
-                                        </strong>
+                                        <strong id="summaryContestChange">0</strong>
                                         <small>net change</small>
                                     </div>
                                 </div>
@@ -261,73 +246,73 @@
                         </section>
                     </section>
                 </section>
-                    <!-- =================================================
-                        AVERAGE SOLVED PROBLEM RATING
-                    ================================================== -->
-                    <section class="analytics-subgrid">
-                        <article class="dashboard-card avg-rating-card">
-                            <div class="card-header">
-                                <div>
-                                    <span class="card-kicker">DIFFICULTY</span>
-                                    <h2>Average Solved Problem Rating</h2>
-                                    <p>See how the difficulty of your solved problems is evolving.</p>
-                                </div>
-                                <div class="select-wrapper">
-                                    <select id="averageRatingPeriod">
-                                        <option value="week">Last Week</option>
-                                        <option value="month" selected>Last Month</option>
-                                        <option value="year">Last Year</option>
-                                        <option value="custom">Custom Range</option>
-                                    </select>
-                                    <i class="fa-solid fa-chevron-down"></i>
+                <!-- =================================================
+                    AVERAGE SOLVED PROBLEM RATING
+                ================================================== -->
+                <section class="analytics-subgrid">
+                    <article class="dashboard-card avg-rating-card">
+                        <div class="card-header">
+                            <div>
+                                <span class="card-kicker">DIFFICULTY</span>
+                                <h2>Average Solved Problem Rating</h2>
+                                <p>See how the difficulty of your solved problems is evolving.</p>
+                            </div>
+                            <div class="select-wrapper">
+                                <select id="averageRatingPeriod">
+                                    <option value="week">Last Week</option>
+                                    <option value="month" selected>Last Month</option>
+                                    <option value="year">Last Year</option>
+                                    <option value="custom">Custom Range</option>
+                                </select>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="average-rating-main">
+                            <div class="average-rating-number">
+                                <span>Average</span>
+                                <strong id="averageRatingValue">1,387</strong>
+                                <div class="metric-trend positive">
+                                    <i class="fa-solid fa-arrow-trend-up"></i>
+                                    <span>4.8%</span>
+                                    <small>from previous period</small>
                                 </div>
                             </div>
-                            <div class="average-rating-main">
-                                <div class="average-rating-number">
-                                    <span>Average</span>
-                                    <strong id="averageRatingValue">1,387</strong>
-                                    <div class="metric-trend positive">
-                                        <i class="fa-solid fa-arrow-trend-up"></i>
-                                        <span>4.8%</span>
-                                        <small>from previous period</small>
-                                    </div>
+                            <div class="difficulty-distribution">
+                                <div class="difficulty-bar">
+                                    <span class="difficulty-segment easy" style="width: 18%"></span>
+                                    <span class="difficulty-segment medium" style="width: 42%"></span>
+                                    <span class="difficulty-segment hard" style="width: 30%"></span>
+                                    <span class="difficulty-segment expert" style="width: 10%"></span>
                                 </div>
-                                <div class="difficulty-distribution">
-                                    <div class="difficulty-bar">
-                                        <span class="difficulty-segment easy" style="width: 18%"></span>
-                                        <span class="difficulty-segment medium" style="width: 42%"></span>
-                                        <span class="difficulty-segment hard" style="width: 30%"></span>
-                                        <span class="difficulty-segment expert" style="width: 10%"></span>
-                                    </div>
-                                    <div class="difficulty-legend">
-                                        <span>
-                                            <i class="legend-dot easy"></i>
-                                            &lt; 1000
-                                        </span>
-                                        <span>
-                                            <i class="legend-dot medium"></i>
-                                            1000–1400
-                                        </span>
-                                        <span>
-                                            <i class="legend-dot hard"></i>
-                                            1400–1800
-                                        </span>
-                                        <span>
-                                            <i class="legend-dot expert"></i>
-                                            1800+
-                                        </span>
-                                    </div>
+                                <div class="difficulty-legend">
+                                    <span>
+                                        <i class="legend-dot easy"></i>
+                                        &lt; 1000
+                                    </span>
+                                    <span>
+                                        <i class="legend-dot medium"></i>
+                                        1000–1400
+                                    </span>
+                                    <span>
+                                        <i class="legend-dot hard"></i>
+                                        1400–1800
+                                    </span>
+                                    <span>
+                                        <i class="legend-dot expert"></i>
+                                        1800+
+                                    </span>
                                 </div>
                             </div>
-                            <div class="chart-container average-rating-chart-container">
-                                <canvas id="averageRatingChart"></canvas>
-                            </div>
-                        </article>
-                    <!-- </section> -->
+                        </div>
+                        <div class="chart-container average-rating-chart-container">
+                            <canvas id="averageRatingChart"></canvas>
+                        </div>
+                    </article>
+                    </section>
                         <!-- =================================================
                             WEAKNESS ANALYSIS
                         ================================================== -->
-                    <!-- <section class="analytics-subgrid"> -->
+                    <section class="analytics-subgrid">
                         <article class="dashboard-card weakness-card">
                             <div class="card-header">
                                 <div>
@@ -1118,25 +1103,10 @@
             </div>
         </div>
     </div>
-    <!-- =========================================================
-         DASHBOARD JS
-    ========================================================== -->
-    <script src="js/dashboardsection/dashboard-utils.js"></script>
 
-    <!-- অন্য section files -->
-    <script src="js/dashboardsection/profile.js"></script>
-    <script src="js/dashboardsection/statistics.js"></script>
-    <script src="js/dashboardsection/weakness.js"></script>
-    <script src="js/dashboardsection/problemanalytics.js"></script>
-    <script src="js/dashboardsection/contest.js"></script>
-    <script src="js/dashboardsection/rating-analytics.js"></script>
-    <script src="js/dashboardsection/activity.js"></script>
-    <script src="js/dashboardsection/period.js"></script>
-    <script src="js/dashboardsection/avgrating.js"></script>
-    <script src="js/dashboardsection/search.js"></script>
-    <script src="js/dashboardsection/reminder.js"></script>
-
+    <script src="js/statisticssummary.js"></script>
     <script src="js/dashboard.js"></script>
     <script src="js/nav.js"></script>
+
 </body>
 </html>

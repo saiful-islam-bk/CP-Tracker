@@ -22,18 +22,9 @@ function renderRatingAnalytics(data) {
             cf.maxRating ??
             0
         );
-    const ratings =
-        Array.isArray(
-            data?.ratings
-        )
-            ? data.ratings
-            : Array.isArray(
-                data?.ratingHistory
-            )
-                ? data.ratingHistory
-                : [];
-    const ratingValues =
-        ratings
+    // const ratings = Array.isArray(data?.ratings)?data.ratings:Array.isArray(data?.ratingHistory)?data.ratingHistory:[];
+    const ratings = data.ratings || data.ratingHistory || [];
+    const ratingValues =ratings
             .map(item =>
                 Number(
                     item?.rating ??
@@ -280,15 +271,10 @@ function renderRatingHistoryChart(
             "2d"
         );
     if (!ctx) {
-        return;
+      return;
     }
     const gradient =
-        ctx.createLinearGradient(
-            0,
-            0,
-            0,
-            360
-        );
+        ctx.createLinearGradient(0, 0, 0, 360);
     gradient.addColorStop(
         0,
         "rgba(37,99,235,.18)"
@@ -306,54 +292,35 @@ function renderRatingHistoryChart(
                     labels,
                     datasets: [
                         {
-                            label:
-                                "Rating",
-                            data:
-                                values,
-                            borderColor:
-                                "#2563eb",
-                            backgroundColor:
-                                gradient,
-                            fill:
-                                true,
-                            borderWidth:
-                                3,
-                            pointRadius:
-                                0,
-                            pointHoverRadius:
-                                6,
-                            tension:
-                                0.38
+                            label: "Rating",
+                            data: values,
+                            borderColor: "#2563eb",
+                            backgroundColor: gradient,
+                            fill: true,
+                            borderWidth: 3,
+                            pointRadius: 0,
+                            pointHoverRadius: 6,
+                            tension: 0.38
                         }
                     ]
                 },
                 options: {
-                    responsive:
-                        true,
-                    maintainAspectRatio:
-                        false,
+                    responsive: true,
+                    maintainAspectRatio: false,
                     interaction: {
-                        intersect:
-                            false,
-                        mode:
-                            "index"
+                        intersect: false,
+                        mode: "index"
                     },
                     plugins: {
                         legend: {
-                            display:
-                                false
+                            display: false
                         },
                         tooltip: {
-                            backgroundColor:
-                                "#0f172a",
-                            titleColor:
-                                "#cbd5e1",
-                            bodyColor:
-                                "#ffffff",
-                            padding:
-                                12,
-                            displayColors:
-                                false,
+                            backgroundColor: "#0f172a",
+                            titleColor: "#cbd5e1",
+                            bodyColor: "#ffffff",
+                            padding: 12,
+                            displayColors: false,
                             callbacks: {
                                 label:
                                     context =>
@@ -366,22 +333,18 @@ function renderRatingHistoryChart(
                     scales: {
                         x: {
                             grid: {
-                                display:
-                                    false
+                                display: false
                             },
                             ticks: {
-                                maxTicksLimit:
-                                    8
+                                maxTicksLimit: 8
                             }
                         },
                         y: {
                             border: {
-                                display:
-                                    false
+                                display: false
                             },
                             grid: {
-                                color:
-                                    "rgba(15,23,42,.06)"
+                                color: "rgba(15,23,42,.06)"
                             }
                         }
                     }

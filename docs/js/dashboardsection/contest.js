@@ -24,8 +24,7 @@ function renderContests(data) {
                 return {
                     ...contest,
                     start,
-                    timestamp:
-                        new Date(start).getTime()
+                    timestamp: new Date(start).getTime()
                 };
             })
             .filter(
@@ -37,9 +36,7 @@ function renderContests(data) {
                     Date.now()
             )
             .sort(
-                (a, b) =>
-                    a.timestamp -
-                    b.timestamp
+                (a, b) => a.timestamp - b.timestamp
             )
             .slice(0, 5)
         : [];
