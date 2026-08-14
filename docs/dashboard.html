@@ -245,151 +245,150 @@
                             </div>
                         </section>
                     </section>
-                </section>
-                <!-- =================================================
-                    AVERAGE SOLVED PROBLEM RATING
-                ================================================== -->
-                <section class="analytics-subgrid">
-                    <article class="dashboard-card avg-rating-card">
-                        <div class="card-header">
-                            <div>
-                                <span class="card-kicker">DIFFICULTY</span>
-                                <h2>Average Solved Problem Rating</h2>
-                                <p>See how the difficulty of your solved problems is evolving.</p>
-                            </div>
-                            <div class="select-wrapper">
-                                <select id="averageRatingPeriod">
-                                    <option value="week">Last Week</option>
-                                    <option value="month" selected>Last Month</option>
-                                    <option value="year">Last Year</option>
-                                    <option value="custom">Custom Range</option>
-                                </select>
-                                <i class="fa-solid fa-chevron-down"></i>
-                            </div>
-                        </div>
-                        <div class="average-rating-main">
-                            <div class="average-rating-number">
-                                <span>Average</span>
-                                <strong id="averageRatingValue">1,387</strong>
-                                <div class="metric-trend positive">
-                                    <i class="fa-solid fa-arrow-trend-up"></i>
-                                    <span>4.8%</span>
-                                    <small>from previous period</small>
+                    <!-- =================================================
+                        AVERAGE SOLVED PROBLEM RATING
+                    ================================================== -->
+                        <section class="analytics-subgrid">
+                            <article class="dashboard-card avg-rating-card">
+                                <div class="card-header">
+                                    <div>
+                                        <span class="card-kicker">DIFFICULTY</span>
+                                        <h2>Average Solved Problem Rating</h2>
+                                        <p>See how the difficulty of your solved problems is evolving.</p>
+                                    </div>
+                                    <div class="select-wrapper">
+                                        <select id="averageRatingPeriod">
+                                            <option value="week">Last Week</option>
+                                            <option value="month" selected>Last Month</option>
+                                            <option value="year">Last Year</option>
+                                            <option value="custom">Custom Range</option>
+                                        </select>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="difficulty-distribution">
-                                <div class="difficulty-bar">
-                                    <span class="difficulty-segment easy" style="width: 18%"></span>
-                                    <span class="difficulty-segment medium" style="width: 42%"></span>
-                                    <span class="difficulty-segment hard" style="width: 30%"></span>
-                                    <span class="difficulty-segment expert" style="width: 10%"></span>
+                                <div class="average-rating-main">
+                                    <div class="average-rating-number">
+                                        <span>Average</span>
+                                        <strong id="averageRatingValue">1,387</strong>
+                                        <div class="metric-trend positive">
+                                            <i class="fa-solid fa-arrow-trend-up"></i>
+                                            <span>4.8%</span>
+                                            <small>from previous period</small>
+                                        </div>
+                                    </div>
+                                    <div class="difficulty-distribution">
+                                        <div class="difficulty-bar">
+                                            <span class="difficulty-segment easy" style="width: 18%"></span>
+                                            <span class="difficulty-segment medium" style="width: 42%"></span>
+                                            <span class="difficulty-segment hard" style="width: 30%"></span>
+                                            <span class="difficulty-segment expert" style="width: 10%"></span>
+                                        </div>
+                                        <div class="difficulty-legend">
+                                            <span>
+                                                <i class="legend-dot easy"></i>
+                                                &lt; 1000
+                                            </span>
+                                            <span>
+                                                <i class="legend-dot medium"></i>
+                                                1000–1400
+                                            </span>
+                                            <span>
+                                                <i class="legend-dot hard"></i>
+                                                1400–1800
+                                            </span>
+                                            <span>
+                                                <i class="legend-dot expert"></i>
+                                                1800+
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="difficulty-legend">
-                                    <span>
-                                        <i class="legend-dot easy"></i>
-                                        &lt; 1000
-                                    </span>
-                                    <span>
-                                        <i class="legend-dot medium"></i>
-                                        1000–1400
-                                    </span>
-                                    <span>
-                                        <i class="legend-dot hard"></i>
-                                        1400–1800
-                                    </span>
-                                    <span>
-                                        <i class="legend-dot expert"></i>
-                                        1800+
-                                    </span>
+                                <div class="chart-container average-rating-chart-container">
+                                    <canvas id="averageRatingChart"></canvas>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="chart-container average-rating-chart-container">
-                            <canvas id="averageRatingChart"></canvas>
-                        </div>
-                    </article>
-                    </section>
-                        <!-- =================================================
+                            </article>
+                        </section>
+                            <!-- =================================================
                             WEAKNESS ANALYSIS
                         ================================================== -->
-                    <section class="analytics-subgrid">
-                        <article class="dashboard-card weakness-card">
-                            <div class="card-header">
-                                <div>
-                                    <span class="card-kicker">INSIGHT</span>
-                                    <h2>Weakness Analysis</h2>
-                                    <p>Average attempts needed by topic.</p>
+                        <section class="analytics-subgrid">
+                            <article class="dashboard-card weakness-card">
+                                <div class="card-header">
+                                    <div>
+                                        <span class="card-kicker">INSIGHT</span>
+                                        <h2>Weakness Analysis</h2>
+                                        <p>Average attempts needed by topic.</p>
+                                    </div>
+                                    <button class="text-button">
+                                        Details
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </button>
                                 </div>
-                                <button class="text-button">
-                                    Details
-                                    <i class="fa-solid fa-arrow-right"></i>
-                                </button>
-                            </div>
-                            <div class="weakness-highlight">
-                                <div class="weakness-highlight-icon">
-                                    <i class="fa-solid fa-crosshairs"></i>
+                                <div class="weakness-highlight">
+                                    <div class="weakness-highlight-icon">
+                                        <i class="fa-solid fa-crosshairs"></i>
+                                    </div>
+                                    <div>
+                                        <span>Biggest weakness</span>
+                                        <strong id="weakestTopic">Number Theory</strong>
+                                        <small>3.12 average attempts</small>
+                                    </div>
                                 </div>
-                                <div>
-                                    <span>Biggest weakness</span>
-                                    <strong id="weakestTopic">Number Theory</strong>
-                                    <small>3.12 average attempts</small>
+                                <div class="weakness-list">
+                                    <div class="weakness-row">
+                                        <div class="weakness-topic">
+                                            <span class="topic-dot graph"></span>
+                                            <span>Graphs</span>
+                                        </div>
+                                        <div class="weakness-bar">
+                                            <span style="width: 74%"></span>
+                                        </div>
+                                        <strong>2.31</strong>
+                                    </div>
+                                    <div class="weakness-row">
+                                        <div class="weakness-topic">
+                                            <span class="topic-dot dp"></span>
+                                            <span>Dynamic Programming</span>
+                                        </div>
+                                        <div class="weakness-bar">
+                                            <span style="width: 91%"></span>
+                                        </div>
+                                        <strong>2.84</strong>
+                                    </div>
+                                    <div class="weakness-row">
+                                        <div class="weakness-topic">
+                                            <span class="topic-dot greedy"></span>
+                                            <span>Greedy</span>
+                                        </div>
+                                        <div class="weakness-bar">
+                                            <span style="width: 57%"></span>
+                                        </div>
+                                        <strong>1.76</strong>
+                                    </div>
+                                    <div class="weakness-row">
+                                        <div class="weakness-topic">
+                                            <span class="topic-dot math"></span>
+                                            <span>Number Theory</span>
+                                        </div>
+                                        <div class="weakness-bar">
+                                            <span style="width: 100%"></span>
+                                        </div>
+                                        <strong>3.12</strong>
+                                    </div>
+                                    <div class="weakness-row">
+                                        <div class="weakness-topic">
+                                            <span class="topic-dot strings"></span>
+                                            <span>Strings</span>
+                                        </div>
+                                        <div class="weakness-bar">
+                                            <span style="width: 45%"></span>
+                                        </div>
+                                        <strong>1.42</strong>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="weakness-list">
-                                <div class="weakness-row">
-                                    <div class="weakness-topic">
-                                        <span class="topic-dot graph"></span>
-                                        <span>Graphs</span>
-                                    </div>
-                                    <div class="weakness-bar">
-                                        <span style="width: 74%"></span>
-                                    </div>
-                                    <strong>2.31</strong>
-                                </div>
-                                <div class="weakness-row">
-                                    <div class="weakness-topic">
-                                        <span class="topic-dot dp"></span>
-                                        <span>Dynamic Programming</span>
-                                    </div>
-                                    <div class="weakness-bar">
-                                        <span style="width: 91%"></span>
-                                    </div>
-                                    <strong>2.84</strong>
-                                </div>
-                                <div class="weakness-row">
-                                    <div class="weakness-topic">
-                                        <span class="topic-dot greedy"></span>
-                                        <span>Greedy</span>
-                                    </div>
-                                    <div class="weakness-bar">
-                                        <span style="width: 57%"></span>
-                                    </div>
-                                    <strong>1.76</strong>
-                                </div>
-                                <div class="weakness-row">
-                                    <div class="weakness-topic">
-                                        <span class="topic-dot math"></span>
-                                        <span>Number Theory</span>
-                                    </div>
-                                    <div class="weakness-bar">
-                                        <span style="width: 100%"></span>
-                                    </div>
-                                    <strong>3.12</strong>
-                                </div>
-                                <div class="weakness-row">
-                                    <div class="weakness-topic">
-                                        <span class="topic-dot strings"></span>
-                                        <span>Strings</span>
-                                    </div>
-                                    <div class="weakness-bar">
-                                        <span style="width: 45%"></span>
-                                    </div>
-                                    <strong>1.42</strong>
-                                </div>
-                            </div>
-                        </article>
+                            </article>
+                        </section>
                     </section>
-                </section>
                 <!-- =========================================================
                     RATING SUMMARY
                 ========================================================== -->
@@ -410,7 +409,7 @@
                             <span class="rating-label">Current Rating</span>
                             <div class="rating-number">
                                 <strong id="ratingSummaryCurrent">1234</strong>
-                                <span class="rating-rank">Newbie</span>
+                                <span class="rating-rank">Pupil</span>
                             </div>
                             <div class="rating-progress">
                                 <div class="rating-progress-top">
@@ -669,154 +668,137 @@
                 <!-- =========================================================
                     CONTEST MODULE
                 ========================================================== -->
-                <section class="dashboard-card contest-module-card">
-                    <div class="card-header">
-                        <div>
-                            <span class="card-kicker">CONTESTS</span>
-                            <h2>Contest Center</h2>
-                            <p>Track upcoming contests, reminders and your contest history.</p>
-                        </div>
-                        <button class="text-button">
-                            View all contests
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
-                    <div class="contest-layout">
-                        <!-- Upcoming Contests -->
-                        <div class="upcoming-contests">
-                            <div class="panel-header">
+                <section class="contestgrid">
+                    <section class="contest-box">
+                        <section class="dashboard-card contest-module-card">
+                            <div class="card-header">
                                 <div>
-                                    <h3>Upcoming Contests</h3>
-                                    <span>Don't miss your next opportunity.</span>
+                                    <span class="card-kicker">CONTESTS</span>
+                                    <h2>Contest Center</h2>
+                                    <p>Track upcoming contests, reminders and your contest history.</p>
                                 </div>
-                            </div>
-                            <div class="contest-item">
-                                <div class="contest-platform cf">CF</div>
-                                <div class="contest-info">
-                                    <strong>Codeforces Round #1024</strong>
-                                    <span>
-                                        <i class="fa-regular fa-calendar"></i>
-                                        Today • 8:35 PM
-                                    </span>
-                                </div>
-                                <div class="contest-countdown">
-                                    <span>Starts in</span>
-                                    <strong>02:14:38</strong>
-                                </div>
-                                <button class="contest-reminder active" title="Reminder enabled">
-                                    <i class="fa-solid fa-bell"></i>
+                                <button class="text-button">
+                                    View all contests
+                                    <i class="fa-solid fa-arrow-right"></i>
                                 </button>
                             </div>
-                            <div class="contest-item">
-                                <div class="contest-platform ac">AC</div>
-                                <div class="contest-info">
-                                    <strong>AtCoder Beginner Contest 420</strong>
-                                    <span>
-                                        <i class="fa-regular fa-calendar"></i>
-                                        Tomorrow • 7:00 PM
-                                    </span>
+                            <div class="contest-layout">
+                                <!-- Upcoming Contests -->
+                                <div class="upcoming-contests">
+                                    <div class="panel-header">
+                                        <div>
+                                            <h3>Upcoming Contests</h3>
+                                            <span>Don't miss your next opportunity.</span>
+                                        </div>
+                                    </div>
+                                    <div class="contest-item">
+                                        <div class="contest-platform cf">CF</div>
+                                        <div class="contest-info">
+                                            <strong>Codeforces Round #1024</strong>
+                                            <span>
+                                                <i class="fa-regular fa-calendar"></i>
+                                                Today • 8:35 PM
+                                            </span>
+                                        </div>
+                                        <div class="contest-countdown">
+                                            <span>Starts in</span>
+                                            <strong>02:14:38</strong>
+                                        </div>
+                                        <button class="contest-reminder active" title="Reminder enabled">
+                                            <i class="fa-solid fa-bell"></i>
+                                        </button>
+                                    </div>
+                                    <div class="contest-item">
+                                        <div class="contest-platform ac">AC</div>
+                                        <div class="contest-info">
+                                            <strong>AtCoder Beginner Contest 420</strong>
+                                            <span>
+                                                <i class="fa-regular fa-calendar"></i>
+                                                Tomorrow • 7:00 PM
+                                            </span>
+                                        </div>
+                                        <div class="contest-countdown">
+                                            <span>Starts in</span>
+                                            <strong>1d 02h</strong>
+                                        </div>
+                                        <button class="contest-reminder" title="Set reminder">
+                                            <i class="fa-regular fa-bell"></i>
+                                        </button>
+                                    </div>
+                                    <div class="contest-item">
+                                        <div class="contest-platform cc">CC</div>
+                                        <div class="contest-info">
+                                            <strong>CodeChef Starters 210</strong>
+                                            <span>
+                                                <i class="fa-regular fa-calendar"></i>
+                                                Friday • 9:30 PM
+                                            </span>
+                                        </div>
+                                        <div class="contest-countdown">
+                                            <span>Starts in</span>
+                                            <strong>2d 05h</strong>
+                                        </div>
+                                        <button class="contest-reminder" title="Set reminder">
+                                            <i class="fa-regular fa-bell"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="contest-countdown">
-                                    <span>Starts in</span>
-                                    <strong>1d 02h</strong>
-                                </div>
-                                <button class="contest-reminder" title="Set reminder">
-                                    <i class="fa-regular fa-bell"></i>
-                                </button>
                             </div>
-                            <div class="contest-item">
-                                <div class="contest-platform cc">CC</div>
-                                <div class="contest-info">
-                                    <strong>CodeChef Starters 210</strong>
-                                    <span>
-                                        <i class="fa-regular fa-calendar"></i>
-                                        Friday • 9:30 PM
-                                    </span>
-                                </div>
-                                <div class="contest-countdown">
-                                    <span>Starts in</span>
-                                    <strong>2d 05h</strong>
-                                </div>
-                                <button class="contest-reminder" title="Set reminder">
-                                    <i class="fa-regular fa-bell"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- Contest Reminder -->
-                        <div class="contest-reminder-panel">
-                            <div class="reminder-icon">
-                                <i class="fa-solid fa-bell"></i>
-                            </div>
-                            <span class="card-kicker">REMINDER</span>
-                            <h3>Never miss a contest.</h3>
-                            <p>Get notified before your favorite contests begin.</p>
-                            <div class="reminder-options">
-                                <label class="reminder-option">
-                                    <input type="checkbox" checked>
-                                    <span>1 day before</span>
-                                </label>
-                                <label class="reminder-option">
-                                    <input type="checkbox" checked>
-                                    <span>15 minutes before</span>
-                                </label>
-                            </div>
-                            <button class="primary-button">
-                                <i class="fa-solid fa-bell"></i>
-                                Save Reminder Settings
-                            </button>
-                        </div>
-                    </div>
+                        </section>
+                    </section>
                     <!-- Contest History -->
-                    <div class="contest-history">
-                        <div class="panel-header">
-                            <div>
-                                <h3>Contest History</h3>
-                                <span>Your recent contest performance</span>
-                            </div>
-                            <button class="icon-button">
-                                <i class="fa-solid fa-ellipsis"></i>
-                            </button>
-                        </div>
-                        <div class="contest-history-table">
-                            <div class="contest-history-row table-head">
-                                <span>Contest</span>
-                                <span>Date</span>
-                                <span>Rank</span>
-                                <span>Rating Change</span>
-                                <span>Performance</span>
-                            </div>
-                            <div class="contest-history-row">
-                                <div class="contest-history-name">
-                                    <span class="mini-platform cf">CF</span>
-                                    Codeforces Round #1021
+                    <section class="contest-box">
+                        <section class="dashboard-card contest-history-card">
+                            <div class="card-header">
+                                <div>
+                                    <h3>Contest History</h3>
+                                    <span>Your recent contest performance</span>
                                 </div>
-                                <span>Aug 09, 2026</span>
-                                <strong>#2,431</strong>
-                                <span class="positive">+48</span>
-                                <span class="performance-badge good">1468</span>
+                                <button class="icon-button">
+                                    <i class="fa-solid fa-ellipsis"></i>
+                                </button>
                             </div>
-                            <div class="contest-history-row">
-                                <div class="contest-history-name">
-                                    <span class="mini-platform ac">AC</span>
-                                    ABC 418
+                            <div class="contest-history-table">
+                                <div class="contest-history-row table-head">
+                                    <span>Contest</span>
+                                    <span>Date</span>
+                                    <span>Rank</span>
+                                    <span>Rating Change</span>
+                                    <span>Performance</span>
                                 </div>
-                                <span>Aug 02, 2026</span>
-                                <strong>#4,821</strong>
-                                <span class="negative">-12</span>
-                                <span class="performance-badge average">1322</span>
-                            </div>
-                            <div class="contest-history-row">
-                                <div class="contest-history-name">
-                                    <span class="mini-platform cf">CF</span>
-                                    Codeforces Round #1018
+                                <div class="contest-history-row">
+                                    <div class="contest-history-name">
+                                        <span class="mini-platform cf">CF</span>
+                                        Codeforces Round #1021
+                                    </div>
+                                    <span>Aug 09, 2026</span>
+                                    <strong>#2,431</strong>
+                                    <span class="positive">+48</span>
+                                    <span class="performance-badge good">1468</span>
                                 </div>
-                                <span>Jul 27, 2026</span>
-                                <strong>#3,214</strong>
-                                <span class="positive">+27</span>
-                                <span class="performance-badge good">1398</span>
+                                <div class="contest-history-row">
+                                    <div class="contest-history-name">
+                                        <span class="mini-platform ac">AC</span>
+                                        ABC 418
+                                    </div>
+                                    <span>Aug 02, 2026</span>
+                                    <strong>#4,821</strong>
+                                    <span class="negative">-12</span>
+                                    <span class="performance-badge average">1322</span>
+                                </div>
+                                <div class="contest-history-row">
+                                    <div class="contest-history-name">
+                                        <span class="mini-platform cf">CF</span>
+                                        Codeforces Round #1018
+                                    </div>
+                                    <span>Jul 27, 2026</span>
+                                    <strong>#3,214</strong>
+                                    <span class="positive">+27</span>
+                                    <span class="performance-badge good">1398</span>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </section>
+                    </section>
                 </section>
                 <!-- =========================================================
                     RATING ANALYTICS
@@ -1103,10 +1085,10 @@
             </div>
         </div>
     </div>
-
+    <script src="js/contest.js"></script>
+    <script src="js/avgsolveproblemrating.js"></script>
     <script src="js/statisticssummary.js"></script>
     <script src="js/dashboard.js"></script>
     <script src="js/nav.js"></script>
-
 </body>
 </html>

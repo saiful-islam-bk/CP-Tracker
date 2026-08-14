@@ -285,47 +285,36 @@
        ========================================================= */
     async function initializeDashboard() {
         showDashboardLoading(true);
-
         try {
             // 1. Load logged-in user's profile
             const profile = await loadProfile();
-
             renderProfile(profile);
-
             // 2. IMPORTANT:
             // Sync Codeforces/CodeChef/AtCoder data first.
             // Without this, /dashboard may return old/empty data.
             const syncResult = await syncDashboard();
-
             if (syncResult) {
                 console.log(
                     "Dashboard sync completed:",
                     syncResult
                 );
             }
-
             // 3. Load freshly synchronized dashboard data
             const dashboard = await loadDashboard();
-
             renderDashboard(
                 dashboard,
                 profile
             );
-
             updateLastSync();
-
         } catch (error) {
-
             console.error(
                 "Dashboard initialization failed:",
                 error
             );
-
             showDashboardError(
                 error.message ||
                 "Unable to load dashboard."
             );
-
         } finally {
             showDashboardLoading(false);
         }
@@ -630,106 +619,182 @@
             : `${h}h`;
     }
     /* =========================================================
-       AVERAGE PROBLEM RATING
-       ========================================================= */
+    AVERAGE SOLVED PROBLEM RATING
+    ========================================================= */
     function renderAverageProblemRating(data) {
-        const periods =
-            data.periods ||
-            {};
-        const period =
-            periods[
-                state.periods.averageRating
-            ] ||
+        const periods = data.periods || {};
+        const selectedPeriod =
+            periods[state.periods.averageRating] ||
             periods.month ||
             {};
-        const ratings =
-            Array.isArray(
-                period.problemRatings
-            )
-                ? period.problemRatings
-                : [];
+        let ratings = [];
+        /* -----------------------------------------
+        1. Direct problemRatings
+        ----------------------------------------- */
+        if (Array.isArray(selectedPeriod.problemRatings)) {
+            ratings = selectedPeriod.problemRatings
+                .map(item => {
+                    if (typeof item === "object") {
+                        return Number(
+                            item.rating ??
+                            item.problemRating ??
+                            0
+                        );
+                    }
+                    return Number(item);
+                })
+                .filter(
+                    rating =>
+                        Number.isFinite(rating) &&
+                        rating > 0
+                );
+        }
+        /* -----------------------------------------
+        2. solvedProblems fallback
+        ----------------------------------------- */
+        if (
+            !ratings.length &&
+            Array.isArray(selectedPeriod.solvedProblems)
+        ) {
+            ratings =
+                selectedPeriod.solvedProblems
+                    .map(problem =>
+                        Number(
+                            problem.rating ??
+                            problem.problemRating ??
+                            0
+                        )
+                    )
+                    .filter(
+                        rating =>
+                            Number.isFinite(rating) &&
+                            rating > 0
+                    );
+        }
+        /* -----------------------------------------
+        3. problems fallback
+        ----------------------------------------- */
+        if (
+            !ratings.length &&
+            Array.isArray(selectedPeriod.problems)
+        ) {
+            ratings =
+                selectedPeriod.problems
+                    .map(problem =>
+                        Number(
+                            problem.rating ??
+                            problem.problemRating ??
+                            0
+                        )
+                    )
+                    .filter(
+                        rating =>
+                            Number.isFinite(rating) &&
+                            rating > 0
+                    );
+        }
+        /* -----------------------------------------
+        Average
+        ----------------------------------------- */
         const avg =
-            average(ratings);
-        setText(
-            "averageRatingValue",
-            avg
-                ? number(Math.round(avg))
-                : "—"
-        );
-        /*
-         * Difficulty distribution
-         */
-        const buckets = {
+            ratings.length
+                ? ratings.reduce(
+                    (sum, rating) =>
+                        sum + rating,
+                    0
+                ) / ratings.length
+                : 0;
+        const averageValue =
+            $("averageRatingValue");
+        if (averageValue) {
+            averageValue.textContent =
+                avg > 0
+                    ? Math.round(avg).toLocaleString()
+                    : "—";
+        }
+        /* -----------------------------------------
+        Difficulty Distribution
+        ----------------------------------------- */
+        const difficulty = {
             easy: 0,
             medium: 0,
             hard: 0,
             expert: 0
         };
         ratings.forEach(rating => {
-            const r =
-                Number(rating);
-            if (r < 1000) {
-                buckets.easy++;
-            } else if (r < 1400) {
-                buckets.medium++;
-            } else if (r < 1800) {
-                buckets.hard++;
+            if (rating < 1000) {
+                difficulty.easy++;
+            } else if (rating < 1400) {
+                difficulty.medium++;
+            } else if (rating < 1800) {
+                difficulty.hard++;
             } else {
-                buckets.expert++;
+                difficulty.expert++;
             }
         });
         const total =
             ratings.length || 1;
         const percentages = {
-            easy:
-                buckets.easy / total * 100,
-            medium:
-                buckets.medium / total * 100,
-            hard:
-                buckets.hard / total * 100,
-            expert:
-                buckets.expert / total * 100
+            easy: difficulty.easy / total * 100,
+            medium: difficulty.medium / total * 100,
+            hard: difficulty.hard / total * 100,
+            expert: difficulty.expert / total * 100
         };
-        const segments =
-            document.querySelectorAll(
-                ".difficulty-segment"
+        /* -----------------------------------------
+        Update difficulty bar
+        ----------------------------------------- */
+        const easySegment =
+            document.querySelector(
+                ".difficulty-segment.easy"
             );
-        segments.forEach(segment => {
-            if (
-                segment.classList.contains("easy")
-            ) {
-                segment.style.width =
-                    `${percentages.easy}%`;
-            }
-            if (
-                segment.classList.contains("medium")
-            ) {
-                segment.style.width =
-                    `${percentages.medium}%`;
-            }
-            if (
-                segment.classList.contains("hard")
-            ) {
-                segment.style.width =
-                    `${percentages.hard}%`;
-            }
-            if (
-                segment.classList.contains("expert")
-            ) {
-                segment.style.width =
-                    `${percentages.expert}%`;
-            }
-        });
+        const mediumSegment =
+            document.querySelector(
+                ".difficulty-segment.medium"
+            );
+        const hardSegment =
+            document.querySelector(
+                ".difficulty-segment.hard"
+            );
+        const expertSegment =
+            document.querySelector(
+                ".difficulty-segment.expert"
+            );
+        if (easySegment) {
+            easySegment.style.width =
+                `${percentages.easy}%`;
+        }
+        if (mediumSegment) {
+            mediumSegment.style.width =
+                `${percentages.medium}%`;
+        }
+        if (hardSegment) {
+            hardSegment.style.width =
+                `${percentages.hard}%`;
+        }
+        if (expertSegment) {
+            expertSegment.style.width =
+                `${percentages.expert}%`;
+        }
+        /* -----------------------------------------
+        Chart
+        ----------------------------------------- */
         renderAverageRatingChart(
-            data,
+            selectedPeriod,
             ratings
+        );
+        /* -----------------------------------------
+        Trend
+        ----------------------------------------- */
+        updateAverageRatingTrend(
+            data,
+            avg
         );
     }
     /* =========================================================
-       AVERAGE RATING CHART
-       ========================================================= */
+    AVERAGE RATING CHART
+    ========================================================= */
     function renderAverageRatingChart(
-        data,
+        periodData,
         ratings
     ) {
         const canvas =
@@ -740,39 +805,66 @@
         ) {
             return;
         }
+        /* Destroy old chart */
         if (state.charts.averageRating) {
             state.charts.averageRating.destroy();
+            state.charts.averageRating = null;
         }
-        const history =
-            data.averageProblemRatingHistory ||
-            data.problemRatingHistory ||
-            data.averageRatingHistory ||
-            [];
         let labels = [];
         let values = [];
-        if (Array.isArray(history) && history.length) {
-            labels =
-                history.map(
-                    item =>
-                        formatDate(
-                            item.date ||
-                            item.time
+        /*
+        * If backend sends history:
+        *
+        * averageRatingHistory: [
+        *   {
+        *      date: "...",
+        *      rating: 1200
+        *   }
+        * ]
+        */
+        const history =
+            periodData.averageRatingHistory ||
+            periodData.problemRatingHistory ||
+            periodData.ratingHistory ||
+            [];
+        if (
+            Array.isArray(history) &&
+            history.length
+        ) {
+            history.forEach(item => {
+                const rating =
+                    Number(
+                        item.rating ??
+                        item.average ??
+                        item.avgRating ??
+                        item.problemRating ??
+                        0
+                    );
+                if (
+                    !Number.isFinite(rating) ||
+                    rating <= 0
+                ) {
+                    return;
+                }
+                const date =
+                    item.date ??
+                    item.time ??
+                    item.timestamp;
+                labels.push(
+                    date
+                        ? formatDate(
+                            normalizeTimestamp(date)
                         )
+                        : `#${labels.length + 1}`
                 );
-            values =
-                history.map(
-                    item =>
-                        Number(
-                            item.rating ||
-                            item.average ||
-                            0
-                        )
-                );
-        } else {
-            /*
-             * If backend only gives raw ratings,
-             * create a compact progression.
-             */
+                values.push(rating);
+            });
+        }
+        /*
+        * If backend doesn't provide history,
+        * use individual solved problem ratings.
+        */
+        if (!values.length) {
             values =
                 ratings.slice(-30);
             labels =
@@ -781,32 +873,299 @@
                         `#${index + 1}`
                 );
         }
+        /*
+        * No data
+        */
+        if (!values.length) {
+            const ctx =
+                canvas.getContext("2d");
+            ctx.clearRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+            return;
+        }
+        /* -----------------------------------------
+        Chart
+        ----------------------------------------- */
+        const ctx =
+            canvas.getContext("2d");
+        const gradient =
+            ctx.createLinearGradient(
+                0,
+                0,
+                0,
+                300
+            );
+        gradient.addColorStop(
+            0,
+            "rgba(37, 99, 235, 0.18)"
+        );
+        gradient.addColorStop(
+            1,
+            "rgba(37, 99, 235, 0)"
+        );
         state.charts.averageRating =
             new Chart(
-                canvas.getContext("2d"),
+                ctx,
                 {
                     type: "line",
                     data: {
                         labels,
-                        datasets: [{
-                            data: values,
-                            borderColor:
-                                "#2563eb",
-                            backgroundColor:
-                                "rgba(37,99,235,.08)",
-                            fill: true,
-                            tension: 0.4,
-                            borderWidth: 2,
-                            pointRadius: 0,
-                            pointHoverRadius: 5
-                        }]
+                        datasets: [
+                            {
+                                label:
+                                    "Problem Rating",
+                                data:
+                                    values,
+                                borderColor:
+                                    "#2563eb",
+                                backgroundColor:
+                                    gradient,
+                                fill:
+                                    true,
+                                tension:
+                                    0.4,
+                                borderWidth:
+                                    2.5,
+                                pointRadius:
+                                    0,
+                                pointHoverRadius:
+                                    5,
+                                pointHoverBorderWidth:
+                                    2
+                            }
+                        ]
                     },
-                    options:
-                        chartOptions(
-                            "Average Rating"
-                        )
+                    options: {
+                        responsive:
+                            true,
+                        maintainAspectRatio:
+                            false,
+                        interaction: {
+                            intersect:
+                                false,
+                            mode:
+                                "index"
+                        },
+                        plugins: {
+                            legend: {
+                                display:
+                                    false
+                            },
+                            tooltip: {
+                                backgroundColor:
+                                    "#0f172a",
+                                titleColor:
+                                    "#cbd5e1",
+                                bodyColor:
+                                    "#ffffff",
+                                padding:
+                                    12,
+                                displayColors:
+                                    false,
+                                callbacks: {
+                                    label:
+                                        context =>
+                                            `Rating: ${Number(
+                                                context.raw
+                                            ).toLocaleString()}`
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display:
+                                        false
+                                },
+                                ticks: {
+                                    maxTicksLimit:
+                                        7
+                                }
+                            },
+                            y: {
+                                beginAtZero:
+                                    false,
+                                border: {
+                                    display:
+                                        false
+                                },
+                                grid: {
+                                    color:
+                                        "rgba(15,23,42,.06)"
+                                },
+                                ticks: {
+                                    callback:
+                                        value =>
+                                            Number(
+                                                value
+                                            ).toLocaleString()
+                                }
+                            }
+                        }
+                    }
                 }
             );
+    }
+    /* =========================================================
+    AVERAGE RATING TREND
+    ========================================================= */
+    function updateAverageRatingTrend(
+        data,
+        currentAverage
+    ) {
+        const trend =
+            document.querySelector(
+                ".avg-rating-card .metric-trend"
+            );
+        if (!trend) {
+            return;
+        }
+        const trendIcon =
+            trend.querySelector("i");
+        const trendValue =
+            trend.querySelector("span");
+        const trendText =
+            trend.querySelector("small");
+        /*
+        * Backend can provide:
+        *
+        * averageRatingChange
+        * previousAverageRating
+        */
+        const period =
+            data.periods?.[
+                state.periods.averageRating
+            ] || {};
+        const previousAverage =
+            Number(
+                period.previousAverageRating ??
+                period.previousAvgRating ??
+                0
+            );
+        let change = 0;
+        if (
+            previousAverage > 0 &&
+            currentAverage > 0
+        ) {
+            change =
+                (
+                    (
+                        currentAverage -
+                        previousAverage
+                    ) /
+                    previousAverage
+                ) *
+                100;
+        } else {
+            change =
+                Number(
+                    period.averageRatingChange ??
+                    data.averageRatingChange ??
+                    0
+                );
+        }
+        /* -----------------------------------------
+        No previous data
+        ----------------------------------------- */
+        if (!Number.isFinite(change)) {
+            change = 0;
+        }
+        if (change > 0) {
+            trend.classList.remove(
+                "negative"
+            );
+            trend.classList.add(
+                "positive"
+            );
+            if (trendIcon) {
+                trendIcon.className =
+                    "fa-solid fa-arrow-trend-up";
+            }
+        } else if (change < 0) {
+            trend.classList.remove(
+                "positive"
+            );
+            trend.classList.add(
+                "negative"
+            );
+            if (trendIcon) {
+                trendIcon.className =
+                    "fa-solid fa-arrow-trend-down";
+            }
+        } else {
+            trend.classList.remove(
+                "positive",
+                "negative"
+            );
+            if (trendIcon) {
+                trendIcon.className =
+                    "fa-solid fa-minus";
+            }
+        }
+        if (trendValue) {
+            trendValue.textContent =
+                `${change >= 0 ? "+" : ""}${change.toFixed(1)}%`;
+        }
+        if (trendText) {
+            trendText.textContent =
+                previousAverage > 0
+                    ? "from previous period"
+                    : `${ratingsCountText(data)} solved`;
+        }
+    }
+    /* =========================================================
+    HELPER — RATING COUNT
+    ========================================================= */
+    function ratingsCountText(data) {
+        const period =
+            data.periods?.[
+                state.periods.averageRating
+            ] || {};
+        const ratings =
+            period.problemRatings ||
+            period.solvedProblems ||
+            period.problems ||
+            [];
+        const count =
+            Array.isArray(ratings)
+                ? ratings.length
+                : 0;
+        return `${count}`;
+    }
+    /* =========================================================
+    HELPER — TIMESTAMP
+    ========================================================= */
+    function normalizeTimestamp(value) {
+        if (!value) {
+            return null;
+        }
+        /*
+        * Unix timestamp in seconds
+        */
+        if (
+            typeof value === "number" ||
+            /^\d+$/.test(String(value))
+        ) {
+            const numberValue =
+                Number(value);
+            /*
+            * seconds
+            */
+            if (
+                String(value).length <= 10
+            ) {
+                return numberValue * 1000;
+            }
+            /*
+            * milliseconds
+            */
+            return numberValue;
+        }
+        return value;
     }
     /* =========================================================
        WEAKNESS ANALYSIS
@@ -1479,206 +1838,7 @@
                 })
                 .join("");
     }
-    /* =========================================================
-       CONTESTS
-       ========================================================= */
-    function renderContests(data) {
-        const contests =
-            data.upcomingContests ||
-            data.contests ||
-            [];
-        const list =
-            document.querySelector(
-                ".upcoming-contests"
-            );
-        if (!list) return;
-        /*
-         * Keep panel header.
-         */
-        const items =
-            contests
-                .map(contest => {
-                    const start =
-                        contest.startTime ||
-                        contest.start ||
-                        contest.time;
-                    return {
-                        ...contest,
-                        start,
-                        timestamp:
-                            new Date(start).getTime()
-                    };
-                })
-                .filter(
-                    contest =>
-                        Number.isFinite(
-                            contest.timestamp
-                        ) &&
-                        contest.timestamp >
-                        Date.now()
-                )
-                .sort(
-                    (a, b) =>
-                        a.timestamp -
-                        b.timestamp
-                )
-                .slice(0, 5);
-        /*
-         * Remove old dynamic contest items
-         * but preserve panel header.
-         */
-        list
-            .querySelectorAll(
-                ".contest-item"
-            )
-            .forEach(
-                item =>
-                    item.remove()
-            );
-        if (!items.length) {
-            const empty =
-                document.createElement(
-                    "div"
-                );
-            empty.className =
-                "contest-empty";
-            empty.textContent =
-                "No upcoming contests found.";
-            list.appendChild(empty);
-            return;
-        }
-        items.forEach(
-            contest => {
-                const platform =
-                    (
-                        contest.platform ||
-                        "CP"
-                    ).toUpperCase();
-                const div =
-                    document.createElement(
-                        "div"
-                    );
-                div.className =
-                    "contest-item";
-                div.innerHTML = `
-                    <div class="contest-platform ${platform.toLowerCase()}">
-                        ${escapeHTML(
-                            platform.slice(0, 2)
-                        )}
-                    </div>
-                    <div class="contest-info">
-                        <strong>
-                            ${escapeHTML(
-                                contest.name ||
-                                "Contest"
-                            )}
-                        </strong>
-                        <span>
-                            <i class="fa-regular fa-calendar"></i>
-                            ${formatDateTime(
-                                contest.start
-                            )}
-                        </span>
-                    </div>
-                    <div class="contest-countdown">
-                        <span>
-                            Starts in
-                        </span>
-                        <strong
-                            data-contest-countdown="${contest.timestamp}">
-                            ${countdown(
-                                contest.timestamp -
-                                Date.now()
-                            )}
-                        </strong>
-                    </div>
-                    <button
-                        class="contest-reminder"
-                        data-contest-id="${escapeHTML(
-                            contest.id ||
-                            contest.name ||
-                            ""
-                        )}"
-                        title="Set reminder">
-                        <i class="fa-regular fa-bell"></i>
-                    </button>
-                `;
-                list.appendChild(div);
-            }
-        );
-        setupContestReminderButtons();
-        startCountdown();
-    }
-    /* =========================================================
-       CONTEST COUNTDOWN
-       ========================================================= */
-    function startCountdown() {
-        clearInterval(
-            state.countdownTimer
-        );
-        state.countdownTimer =
-            setInterval(() => {
-                document
-                    .querySelectorAll(
-                        "[data-contest-countdown]"
-                    )
-                    .forEach(element => {
-                        const target =
-                            Number(
-                                element.dataset
-                                    .contestCountdown
-                            );
-                        const diff =
-                            target -
-                            Date.now();
-                        element.textContent =
-                            countdown(diff);
-                    });
-            }, 1000);
-    }
-    /* =========================================================
-       CONTEST REMINDER
-       ========================================================= */
-    function setupContestReminderButtons() {
-        document
-            .querySelectorAll(
-                ".contest-reminder"
-            )
-            .forEach(button => {
-                button.onclick =
-                    () => {
-                        button.classList.toggle(
-                            "active"
-                        );
-                        const enabled =
-                            button.classList.contains(
-                                "active"
-                            );
-                        const icon =
-                            button.querySelector(
-                                "i"
-                            );
-                        if (icon) {
-                            icon.className =
-                                enabled
-                                    ? "fa-solid fa-bell"
-                                    : "fa-regular fa-bell";
-                        }
-                        if (
-                            enabled &&
-                            "Notification"
-                            in window
-                        ) {
-                            if (
-                                Notification.permission ===
-                                "default"
-                            ) {
-                                Notification.requestPermission();
-                            }
-                        }
-                    };
-            });
-    }
+   
     /* =========================================================
        RATING ANALYTICS
        ========================================================= */
@@ -2332,50 +2492,42 @@
          * Average rating
          */
         $("averageRatingPeriod")
-            ?.addEventListener(
-                "change",
-                event => {
-                    state.periods.averageRating =
-                        event.target.value;
-                    if (state.dashboard) {
-                        renderAverageProblemRating(
-                            state.dashboard
-                        );
-                    }
+            ?.addEventListener("change", event => {
+                state.periods.averageRating = event.target.value;
+                if (state.dashboard) {
+                    renderAverageProblemRating(
+                        state.dashboard
+                    );
                 }
-            );
+            }
+        );
         /*
          * Problem analytics
          */
         $("problemAnalyticsPeriod")
-            ?.addEventListener(
-                "change",
-                event => {
-                    state.periods.problemAnalytics =
-                        event.target.value;
-                    if (state.dashboard) {
-                        renderProblemAnalytics(
-                            state.dashboard
-                        );
-                    }
+            ?.addEventListener("change", event => {
+                state.periods.problemAnalytics = event.target.value;
+                if (state.dashboard) {
+                    renderProblemAnalytics(
+                        state.dashboard
+                    );
                 }
-            );
+            }
+        );
         /*
          * Rating analytics
          */
         $("ratingAnalyticsPeriod")
-            ?.addEventListener(
-                "change",
-                event => {
-                    state.periods.ratingAnalytics =
-                        event.target.value;
-                    if (state.dashboard) {
-                        renderRatingAnalytics(
-                            state.dashboard
-                        );
-                    }
+            ?.addEventListener("change", event => {
+                state.periods.ratingAnalytics =
+                    event.target.value;
+                if (state.dashboard) {
+                    renderRatingAnalytics(
+                        state.dashboard
+                    );
                 }
-            );
+            }
+        );
     }
     /* =========================================================
        SEARCH
@@ -2405,47 +2557,32 @@
             );
         }
         function closeSearch() {
-            overlay.classList.remove(
-                "active"
-            );
-            overlay.setAttribute(
-                "aria-hidden",
-                "true"
-            );
+            overlay.classList.remove("active");
+            overlay.setAttribute("aria-hidden", "true");
             input.value = "";
         }
-        close?.addEventListener(
-            "click",
-            closeSearch
-        );
-        overlay.addEventListener(
-            "click",
-            event => {
-                if (
-                    event.target ===
-                    overlay
-                ) {
-                    closeSearch();
-                }
+        close?.addEventListener("click", closeSearch);
+        overlay.addEventListener("click", event => {
+            if(event.target === overlay) {
+                closeSearch();
             }
+        }
         );
-        document.addEventListener(
-            "keydown",
-            event => {
-                if (
-                    event.key === "/" &&
-                    document.activeElement !==
-                    input
-                ) {
-                    event.preventDefault();
-                    openSearch();
-                }
-                if (
-                    event.key === "Escape"
-                ) {
-                    closeSearch();
-                }
+        document.addEventListener("keydown", event => {
+            if (
+                event.key === "/" &&
+                document.activeElement !==
+                input
+            ) {
+                event.preventDefault();
+                openSearch();
             }
+            if (
+                event.key === "Escape"
+            ) {
+                closeSearch();
+            }
+        }
         );
         /*
          * Navbar may have its own search button.
@@ -2540,10 +2677,7 @@
                         );
                         updateLastSync();
                     } catch (error) {
-                        console.warn(
-                            "Auto refresh failed:",
-                            error.message
-                        );
+                        console.warn("Auto refresh failed:", error.message);
                     }
                 },
                 5 * 60 * 1000

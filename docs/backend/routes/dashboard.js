@@ -172,7 +172,7 @@ async function getCodeforcesData(handle) {
         submissionResponse?.status,
         submissionResponse?.comment || ""
     );
-    
+
     const profile =
         infoResponse?.status === "OK"
             ? infoResponse.result?.[0] || null
@@ -322,12 +322,9 @@ function analyzeCodeforcesSubmissions(
     const activities = [];
     for (const submission of submissions) {
         totalAttempts++;
-        const problem =
-            submission.problem || {};
-        const contestId =
-            problem.contestId;
-        const index =
-            problem.index;
+        const problem = submission.problem || {};
+        const contestId = problem.contestId;
+        const index = problem.index;
         const problemKey =
             contestId !== undefined
                 ? `${contestId}-${index}`
@@ -1264,34 +1261,22 @@ async function buildDashboard(req) {
         languages,
         monthlyProgress,
         activity,
-        heatmap:
-            cfAnalytics.heatmap,
-        contests,
+        heatmap: cfAnalytics.heatmap, contests,
         contestHistory:
             cfRating.history.map(
                 item => ({
-                    contestName:
-                        item.contestName,
-                    date:
-                        item.date,
-                    rank:
-                        item.rank,
-                    oldRating:
-                        item.rating -
-                        item.change,
-                    newRating:
-                        item.rating,
-                    ratingChange:
-                        item.change
+                    contestName: item.contestName,
+                    date: item.date,
+                    rank: item.rank,
+                    oldRating: item.rating - item.change,
+                    newRating: item.rating,
+                    ratingChange: item.change
                 })
             ),
         syncStatus: {
-            codeforces:
-                cf.connected,
-            codechef:
-                cc.connected,
-            atcoder:
-                ac.connected
+            codeforces: cf.connected,
+            codechef: cc.connected,
+            atcoder: ac.connected
         }
     };
 }

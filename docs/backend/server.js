@@ -29,9 +29,11 @@ app.get("/", (req, res) => {
 const authRoutes = require("./routes/auth");
 const profileRoutes = require("./routes/profile");
 const dashboardRoutes = require("./routes/dashboard");
+const contestRoutes = require("./routes/contest");
 app.use("/", authRoutes);
 app.use("/", profileRoutes);
 app.use("/dashboard", dashboardRoutes);
+app.use("/api/contests", contestRoutes);
 // ========================================
 // START SERVER
 // ========================================
