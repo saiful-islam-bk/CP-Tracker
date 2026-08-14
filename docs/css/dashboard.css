@@ -880,20 +880,20 @@ a {
     border: 1px solid #eef2f6;
 }
 .panel-header {
-    display: flex;
-    align-items: center;
+    display: grid;
+    align-items: right;
     justify-content: space-between;
-    gap: 15px;
+    gap: 150px;
     margin-bottom: 18px;
 }
 .panel-header h3 {
-    font-size: 12px;
+    font-size: 14px;
 }
 .panel-header span {
     display: block;
     margin-top: 3px;
     color: var(--text-muted);
-    font-size: 8px;
+    font-size: 10px;
 }
 .icon-button {
     width: 31px;
@@ -1127,8 +1127,8 @@ a {
 
 .contestgrid {
     display: grid;
-    grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
-    gap: 24px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 12px;
     width: 100%;
     align-items: start;
 }
@@ -1138,33 +1138,31 @@ a {
     min-width: 0;
 }
 
-@media (max-width: 768px) {
-    .contestgrid {
-        grid-template-columns: 1fr;
-    }
-}
 .contest-module-card {
     width: 100%;
 }
 .contest-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1.7fr) minmax(190px, .8fr);
-    gap: 16px;
+    display: block;
+    width: 100%;
 }
 .upcoming-contests {
+    width: 100%;
+    min-width: 0;
     padding: 19px;
     border-radius: 15px;
     background: var(--surface-soft);
     border: 1px solid #eef2f6;
+    box-sizing: border-box;
 }
 .contest-item {
+    width: 100%;
     display: grid;
-    grid-template-columns:
-        42px 1fr auto 35px;
+    grid-template-columns: 42px minmax(0, 1fr) auto 35px;
     align-items: center;
     gap: 11px;
     padding: 13px 0;
     border-bottom: 1px solid #edf1f5;
+    box-sizing: border-box;
 }
 .contest-item:last-child {
     border-bottom: 0;
@@ -1195,6 +1193,7 @@ a {
 }
 .contest-info {
     min-width: 0;
+    width: 100%;
 }
 .contest-info strong {
     display: block;
@@ -1211,6 +1210,7 @@ a {
 }
 .contest-countdown {
     text-align: right;
+    white-space: nowrap;
 }
 .contest-countdown span {
     display: block;
@@ -1225,14 +1225,17 @@ a {
     white-space: nowrap;
 }
 .contest-reminder {
-    width: 31px;
-    height: 31px;
+    width: 100%;
+    min-width: 0;
+    /* width: 31px;
+    height: 31px; */
     display: grid;
     place-items: center;
     border-radius: 8px;
     background: #f1f4f8;
     color: var(--text-muted);
     transition: var(--transition);
+    box-sizing: border-box;
 }
 .contest-reminder:hover,
 .contest-reminder.active {
@@ -1244,81 +1247,56 @@ a {
         inset 0 0 0 1px rgba(109,93,252,.12);
 }
 /* =========================================================
-   REMINDER PANEL
+   CONTEST STATES
    ========================================================= */
-.contest-reminder-panel {
-    padding: 22px;
-    border-radius: 15px;
-    background:
-        linear-gradient(
-            145deg,
-            #faf9ff,
-            #f4f2ff
-        );
-    border: 1px solid rgba(109,93,252,.12);
-}
-.reminder-icon {
-    width: 43px;
-    height: 43px;
-    display: grid;
-    place-items: center;
-    margin-bottom: 15px;
-    border-radius: 13px;
-    background: rgba(109,93,252,.10);
-    color: var(--primary);
-    font-size: 15px;
-}
-.contest-reminder-panel h3 {
-    margin: 5px 0 7px;
-    font-size: 15px;
-}
-.contest-reminder-panel p {
-    color: var(--text-muted);
-    font-size: 9px;
-    line-height: 1.7;
-}
-.reminder-options {
+
+.contest-loading,
+.contest-empty,
+.contest-error {
+    min-height: 150px;
     display: flex;
     flex-direction: column;
-    gap: 9px;
-    margin: 18px 0;
-}
-.reminder-option {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--text-secondary);
-    font-size: 9px;
-    cursor: pointer;
-}
-.reminder-option input {
-    accent-color: var(--primary);
-}
-.primary-button {
-    width: 100%;
-    display: flex;
     align-items: center;
     justify-content: center;
     gap: 7px;
-    padding: 10px 13px;
-    border-radius: 9px;
-    background:
-        linear-gradient(
-            135deg,
-            #7668ff,
-            #5d4de9
-        );
-    color: white;
-    font-size: 9px;
-    font-weight: 600;
-    box-shadow:
-        0 7px 18px rgba(109,93,252,.18);
-    transition: var(--transition);
+    text-align: center;
+    color: var(--text-muted);
 }
-.primary-button:hover {
-    transform: translateY(-1px);
-    box-shadow:
-        0 10px 22px rgba(109,93,252,.24);
+
+.contest-loading i,
+.contest-empty i,
+.contest-error i {
+    margin-bottom: 5px;
+    font-size: 20px;
+}
+
+.contest-loading span,
+.contest-empty span,
+.contest-error span {
+    font-size: 8px;
+}
+
+.contest-empty strong,
+.contest-error strong {
+    color: var(--text-secondary);
+    font-size: 10px;
+}
+
+.contest-retry {
+    margin-top: 8px;
+    padding: 7px 13px;
+    border: 0;
+    border-radius: 7px;
+    background: var(--primary-soft);
+    color: var(--primary);
+    font-size: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.contest-retry:hover {
+    background: var(--primary);
+    color: #fff;
 }
 /* =========================================================
    CONTEST HISTORY

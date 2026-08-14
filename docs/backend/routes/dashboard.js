@@ -160,19 +160,16 @@ async function getCodeforcesData(handle) {
         infoResponse?.status,
         infoResponse?.comment || ""
     );
-
     console.log(
         "CF RATING:",
         ratingResponse?.status,
         ratingResponse?.comment || ""
     );
-
     console.log(
         "CF SUBMISSIONS:",
         submissionResponse?.status,
         submissionResponse?.comment || ""
     );
-
     const profile =
         infoResponse?.status === "OK"
             ? infoResponse.result?.[0] || null
@@ -899,14 +896,12 @@ async function buildDashboard(req) {
     const cfHandle = String(user.cf || "").trim();
     const ccHandle = String(user.cc || "").trim();
     const acHandle = String(user.ac || "").trim();
-
         console.log("=================================");
         console.log("DASHBOARD USER:", user.username);
         console.log("CF HANDLE:", cfHandle);
         console.log("CC HANDLE:", ccHandle);
         console.log("AC HANDLE:", acHandle);
         console.log("=================================");
-
     /*
      * Fetch all platforms concurrently.
      */
