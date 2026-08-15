@@ -881,9 +881,9 @@ a {
 }
 .panel-header {
     display: grid;
-    align-items: right;
+    align-items: center;
     justify-content: space-between;
-    gap: 150px;
+    gap: 15px;
     margin-bottom: 18px;
 }
 .panel-header h3 {
@@ -1124,7 +1124,6 @@ a {
 /* =========================================================
    CONTEST MODULE
    ========================================================= */
-
 .contestgrid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -1132,12 +1131,10 @@ a {
     width: 100%;
     align-items: start;
 }
-
 .contest-box {
     width: 100%;
     min-width: 0;
 }
-
 .contest-module-card {
     width: 100%;
 }
@@ -1249,7 +1246,6 @@ a {
 /* =========================================================
    CONTEST STATES
    ========================================================= */
-
 .contest-loading,
 .contest-empty,
 .contest-error {
@@ -1262,26 +1258,22 @@ a {
     text-align: center;
     color: var(--text-muted);
 }
-
 .contest-loading i,
 .contest-empty i,
 .contest-error i {
     margin-bottom: 5px;
     font-size: 20px;
 }
-
 .contest-loading span,
 .contest-empty span,
 .contest-error span {
     font-size: 8px;
 }
-
 .contest-empty strong,
 .contest-error strong {
     color: var(--text-secondary);
     font-size: 10px;
 }
-
 .contest-retry {
     margin-top: 8px;
     padding: 7px 13px;
@@ -1293,7 +1285,6 @@ a {
     font-weight: 600;
     cursor: pointer;
 }
-
 .contest-retry:hover {
     background: var(--primary);
     color: #fff;
@@ -1614,80 +1605,109 @@ a {
 .heatmap-wrapper {
     width: 100%;
     overflow-x: auto;
-    padding: 20px 25px 25px;
+    overflow-y: hidden;
+    padding: 20px 25px 24px;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
 }
 .heatmap-wrapper::-webkit-scrollbar {
     height: 6px;
+}
+.heatmap-wrapper::-webkit-scrollbar-track {
+    background: transparent;
 }
 .heatmap-wrapper::-webkit-scrollbar-thumb {
     background: #cbd5e1;
     border-radius: 10px;
 }
+/* =========================================================
+   MONTHS
+   ========================================================= */
 .heatmap-months {
     position: relative;
-    display: flex;
-    height: 24px;
+    height: 22px;
     margin-left: 34px;
-    margin-bottom: 8px;
+    margin-bottom: 7px;
     width: max-content;
 }
 .heatmap-months span {
     position: absolute;
-    display: block;
-    width: 19px;
-    margin-right: 5px;
-    flex-shrink: 0;
+    top: 0;
     color: #64748b;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 500;
     white-space: nowrap;
 }
+/* =========================================================
+   BODY
+   ========================================================= */
 .heatmap-body {
     display: flex;
+    align-items: flex-start;
     gap: 8px;
     width: max-content;
 }
+/* =========================================================
+   DAYS
+   ========================================================= */
 .heatmap-days {
     width: 26px;
     flex-shrink: 0;
     display: grid;
     grid-template-rows: repeat(7, 14px);
-    gap: 5px;
-    font-size: 10px;
+    gap: 14px;
     color: #94a3b8;
+    font-size: 11px;
 }
 .heatmap-days span {
     display: flex;
     align-items: center;
 }
+/* =========================================================
+   GRID
+   ========================================================= */
 .heatmap-grid {
     display: flex;
     gap: 5px;
     width: max-content;
+    min-height: 128px;
 }
+/* =========================================================
+   WEEK
+   ========================================================= */
 .heatmap-week {
-    display: grid;
-    grid-template-rows: repeat(7, 14px);
-    gap: 5px;
-    width: 14px;
+    width: 20px;
     flex-shrink: 0;
+    display: grid;
+    grid-template-rows: repeat(7, 20px);
+    gap: 7px;
 }
+/* =========================================================
+   CELL
+   ========================================================= */
 .heatmap-cell {
+    width: 20px;
+    height: 20px;
     display: block;
-    width: 14px;
-    height: 14px;
-    min-width: 14px;
-    min-height: 14px;
     border-radius: 3px;
-    background: #f1f5f9;
-    border: 1px solid rgba(15, 23, 42, 0.04);
-    transition: transform .15s ease, box-shadow 0.15s ease;
+    background: #edf1f5;
+    border: 1px solid rgba(15, 23, 42, 0.035);
+    cursor: pointer;
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease;
 }
 .heatmap-cell:hover {
-    transform: scale(1.3);
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18);
-    z-index: 10;
+    transform: scale(1.35);
+    box-shadow:
+        0 3px 10px
+        rgba(15, 23, 42, .18);
+    position: relative;
+    z-index: 5;
 }
+/* =========================================================
+   LEVELS
+   ========================================================= */
 .heatmap-cell.level-0 {
     background: #edf1f5;
 }
@@ -1703,23 +1723,27 @@ a {
 .heatmap-cell.level-4 {
     background: #1d4ed8;
 }
-.heatmap-months {
-    position: relative;
-    display: block;
-    height: 22px;
-    margin-left: 36px;
-    margin-bottom: 8px;
-    width: max-content;
+/* Future dates */
+.heatmap-cell.future {
+    background: #f8fafc;
+    opacity: .55;
+    cursor: default;
 }
-/* Footer */
+.heatmap-cell.future:hover {
+    transform: none;
+    box-shadow: none;
+}
+/* =========================================================
+   FOOTER
+   ========================================================= */
 .heatmap-footer {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: 5px;
-    margin-top: 18px;
-    font-size: 11px;
+    margin-top: 17px;
     color: #64748b;
+    font-size: 10px;
 }
 .heat-level {
     width: 13px;
@@ -1742,61 +1766,57 @@ a {
     background: #1d4ed8;
 }
 /* =========================================================
+   LOADING
+   ========================================================= */
+.heatmap-status {
+    min-width: 350px;
+    min-height: 128px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #64748b;
+    font-size: 11px;
+}
+/* =========================================================
+   ERROR
+   ========================================================= */
+.heatmap-api-error {
+    margin-top: 8px;
+    color: #dc2626;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+/* =========================================================
    RESPONSIVE
    ========================================================= */
 @media (max-width: 768px) {
-    .contest-layout {
-        grid-template-columns: 1fr;
-    }
-    .contest-history-row {
-        min-width: 620px;
-    }
     .heatmap-wrapper {
-        padding-bottom: 18px 5px 12px;
-    }
-    .heatmap-container {
-        min-width: 760px;
-    }
-    .heatmap-cell,
-    .heatmap-week {
-        width: 26px;
-    }
-    .heatmap-cell {
-        height: 26px;
-        min-width: 26px;
-        min-height: 26px;
-    }
-    .heatmap-week {
-        grid-template-rows: repeat(7, 26px);
-        gap: 6px;
-    }
-    .heatmap-grid {
-        gap: 6px;
+        padding: 18px 15px 20px;
     }
     .heatmap-months {
-        grid-auto-columns: 26px;
-        gap: 6px;
+        margin-left: 34px;
     }
-}
-/* =========================================================
-   TEXT BUTTON
-   ========================================================= */
-.text-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 7px 0;
-    background: transparent;
-    color: var(--primary);
-    font-size: 9px;
-    font-weight: 600;
-    transition: var(--transition);
-}
-.text-button:hover {
-    gap: 10px;
-}
-.text-button i {
-    font-size: 8px;
+    .heatmap-cell {
+        width: 20px;
+        height: 20px;
+    }
+    .heatmap-week {
+        width: 20px;
+        grid-template-rows:
+            repeat(7, 20px);
+    }
+    .heatmap-grid {
+        gap: 5px;
+    }
+    .heatmap-week {
+        gap: 5px;
+    }
+    .heatmap-footer {
+        justify-content: flex-start;
+    }
 }
 /* =========================================================
    FOOTER

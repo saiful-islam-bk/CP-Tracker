@@ -28,16 +28,13 @@
     async function loadContests() {
         const container =
             document.querySelector(".upcoming-contests");
-
         if (!container){
             console.error(
               "❌ .upcoming-contests not found"
           );
           return;
         }
-
         showLoading(container);
-
         try {
             const response = await fetch(
                 "/api/contests",
@@ -49,51 +46,37 @@
                     cache: "no-store"
                 }
             );
-
             console.log("Contest HTTP status:", response.status);
-
             if (!response.ok) {
                 throw new Error(
                     `HTTP ${response.status}`
                 );
             }
-
             const result = await response.json();
-
             console.log(
                 "================================="
             );
-
             console.log("CONTEST API:", result);
-
             console.log("CONTEST COUNT:", result?.contests?.length);
-
             console.log("=================================");
-
             if (!result || result.success !== true) {
                 throw new Error(
                     "Contest API returned invalid response"
                 );
             }
-
             const contests =
                 Array.isArray(result.contests)
                     ? result.contests
                     : [];
-
-            
             renderContests(
                 container,
                 contests
             );
-
         } catch (error) {
-
             console.error(
                 "Contest loading failed:",
                 error
             );
-
             showError(container);
         }
     }
@@ -105,7 +88,6 @@
         * Remove previous dynamic
         * contest messages/items.
         */
-
         container
             .querySelectorAll(
                 ".contest-loading, " +
@@ -116,11 +98,9 @@
             .forEach(
                 element => element.remove()
             );
-
         /*
         * No contests.
         */
-
         if (
             !Array.isArray(contests) ||
             contests.length === 0
@@ -128,13 +108,10 @@
             showEmpty(container);
             return;
         }
-
-
         /*
             * Maximum 2 contests from
             * each platform.
             */
-
             const cf =
                 contests
                     .filter(
@@ -147,7 +124,6 @@
                             b.timestamp
                     )
                     .slice(0, 2);
-
             const ac =
                 contests
                     .filter(
@@ -160,7 +136,6 @@
                             b.timestamp
                     )
                     .slice(0, 2);
-
             const cc =
                 contests
                     .filter(
@@ -169,7 +144,6 @@
                     )
                     .sort((a, b) => a.timestamp - b.timestamp)
                     .slice(0, 2);
-
             const finalContests = [
                 ...cf,
                 ...ac,
@@ -177,44 +151,35 @@
             ].sort(
                 (a, b) => a.timestamp - b.timestamp
             );
-
             console.log("CF:", cf);
             console.log("AC:", ac);
             console.log("CC:", cc);
             console.log("FINAL:", finalContests);
-
         /*
         * Add contests.
         */
-
         finalContests.forEach(contest => {
-
                 const normalized =
                     normalizeContest(
                         contest
                     );
-
                 if (
                     !normalized.timestamp
                 ) {
                     return;
                 }
-
                 const item =
                     createContestItem(
                         normalized
                     );
-
                 container.appendChild(
                     item
                 );
             }
         );
-
         /*
         * Start live countdown.
         */
-
         startCountdown();
     }
     // =====================================================

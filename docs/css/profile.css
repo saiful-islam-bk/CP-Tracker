@@ -290,37 +290,39 @@ a{
    SAVE SECTION
 ========================================== */
 .save-section{
-    width:1200px;
-    margin:0 auto 60px;
+    width: 100%;
+    margin: 0 0 60px;
     display:flex;
     justify-content:flex-end;
     gap:15px;
 }
-.cancel{
+.cancel,
+.save {
     border:none;
-    background:#ef4444;
-    color:white;
     padding:15px 35px;
     border-radius:12px;
     cursor:pointer;
     font-size:16px;
-    transition:.25s;
+    font-weight: 600;
+    transition: all .25s ease;
+}
+.cancel {
+    background:#ef4444;
+    color:white;
 }
 .cancel:hover{
     background:#dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(239, 68, 68, .22);
 }
 .save{
-    border:none;
     background:#2563eb;
     color:white;
-    padding:15px 35px;
-    border-radius:12px;
-    cursor:pointer;
-    font-size:16px;
-    transition:.25s;
 }
 .save:hover{
     background:#1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(37, 99, 235, .22);
 }
 /* ==========================================
    SCROLLBAR
@@ -347,6 +349,8 @@ a{
     }
     .save-section{
         width:95%;
+        margin-left:auto;
+        margin-right:auto;
     }
 }
 @media(max-width:900px){
@@ -371,7 +375,7 @@ a{
         grid-template-columns:1fr;
     }
     .save-section{
-        justify-content:center;
+        justify-content:right;
     }
 }
 @media(max-width:600px){

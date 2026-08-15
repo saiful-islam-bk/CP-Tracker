@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard — CP Tracker</title>
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+    <!-- Existing navigation CSS -->
+    <link rel="stylesheet" href="css/nav.css">
+    <!-- Leaderboard CSS -->
+    <link rel="stylesheet" href="css/leaderboard.css">
+</head>
+<body>
+    <!-- =====================================================
+         NAVIGATION
+         ===================================================== -->
+    <div id="nav-container"></div>
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+    <main class="leaderboard-page">
+        <!-- =================================================
+             PAGE HERO
+             ================================================= -->
+        <section class="leaderboard-hero">
+            <div class="hero-content">
+                <div class="hero-kicker">
+                    <span class="hero-kicker-dot"></span>
+                    CP TRACKER COMMUNITY
+                </div>
+                <h1>
+                    Competitive
+                    <span>Leaderboard</span>
+                </h1>
+                <p>
+                    See how programmers are performing across
+                    ratings, solved problems and contests.
+                </p>
+            </div>
+            <div class="hero-decoration">
+                <div class="hero-orbit orbit-one"></div>
+                <div class="hero-orbit orbit-two"></div>
+                <div class="hero-orbit orbit-three"></div>
+                <div class="hero-trophy">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+            </div>
+        </section>
+        <!-- =================================================
+             LEADERBOARD CONTROLS
+             ================================================= -->
+        <section class="leaderboard-toolbar">
+            <div class="toolbar-left">
+                <div class="section-label">
+                    <span class="label-icon">
+                        <i class="fa-solid fa-ranking-star"></i>
+                    </span>
+                    <div>
+                        <strong>Leaderboard</strong>
+                        <span id="userCount">
+                            Loading users...
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="toolbar-right">
+                <!-- Search -->
+                <div class="leaderboard-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input
+                        type="text"
+                        id="leaderboardSearch"
+                        placeholder="Search users..."
+                        autocomplete="off"
+                    >
+                    <button
+                        type="button"
+                        id="clearSearch"
+                        class="clear-search"
+                        aria-label="Clear search"
+                    >
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <!-- Sort -->
+                <div class="sort-wrapper">
+                    <label for="sortLeaderboard">
+                        Sort by
+                    </label>
+                    <div class="sort-select">
+                        <i class="fa-solid fa-arrow-down-wide-short"></i>
+                        <select id="sortLeaderboard">
+                            <option value="rating">
+                                Current Rating
+                            </option>
+                            <option value="solved">
+                                Solved Problems
+                            </option>
+                            <option value="contests">
+                                Contest Participation
+                            </option>
+                            <option value="name">
+                                Name
+                            </option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- =================================================
+             TOP 3 PODIUM
+             ================================================= -->
+        <section
+            class="podium-section"
+            id="podiumSection"
+        >
+            <div class="podium-card second-place">
+                <div class="podium-rank">
+                    #2
+                </div>
+                <div class="podium-avatar">
+                    <span id="podiumAvatar2">?</span>
+                </div>
+                <div class="podium-platforms" id="podiumPlatforms2"></div>
+                <h3 id="podiumName2">
+                    —
+                </h3>
+                <span
+                    class="podium-handle"
+                    id="podiumHandle2"
+                >
+                    —
+                </span>
+                <div class="podium-rating">
+                    <strong id="podiumRating2">
+                        0
+                    </strong>
+                    <span>rating</span>
+                </div>
+                <div class="podium-base">
+                    <span>2</span>
+                </div>
+            </div>
+            <div class="podium-card first-place">
+                <div class="crown">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+                <div class="podium-rank">
+                    #1
+                </div>
+                <div class="podium-avatar">
+                    <span id="podiumAvatar1">?</span>
+                </div>
+                <div class="podium-platforms" id="podiumPlatforms1"></div>
+                <h3 id="podiumName1">
+                    —
+                </h3>
+                <span
+                    class="podium-handle"
+                    id="podiumHandle1"
+                >
+                    —
+                </span>
+                <div class="podium-rating">
+                    <strong id="podiumRating1">
+                        0
+                    </strong>
+                    <span>rating</span>
+                </div>
+                <div class="podium-base">
+                    <span>1</span>
+                </div>
+            </div>
+            <div class="podium-card third-place">
+                <div class="podium-rank">
+                    #3
+                </div>
+                <div class="podium-avatar">
+                    <span id="podiumAvatar3">?</span>
+                </div>
+                <div class="podium-platforms" id="podiumPlatforms3"></div>
+                <h3 id="podiumName3">
+                    —
+                </h3>
+                <span
+                    class="podium-handle"
+                    id="podiumHandle3"
+                >
+                    —
+                </span>
+                <div class="podium-rating">
+                    <strong id="podiumRating3">
+                        0
+                    </strong>
+                    <span>rating</span>
+                </div>
+                <div class="podium-base">
+                    <span>3</span>
+                </div>
+            </div>
+        </section>
+        <!-- =================================================
+             RANKING TABLE
+             ================================================= -->
+        <section class="ranking-card">
+            <div class="ranking-header">
+                <div>
+                    <span class="card-kicker">
+                        GLOBAL RANKING
+                    </span>
+                    <h2>
+                        All Programmers
+                    </h2>
+                    <p>
+                        Rankings are updated automatically from
+                        your CP Tracker data.
+                    </p>
+                </div>
+                <div class="ranking-live">
+                    <span class="live-dot"></span>
+                    Live ranking
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th class="rank-column">
+                                Rank
+                            </th>
+                            <th>
+                                Programmer
+                            </th>
+                            <th>
+                                Rating
+                            </th>
+                            <th>
+                                Solved
+                            </th>
+                            <th>
+                                Contests
+                            </th>
+                            <th>
+                                Platforms
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboardBody">
+                        <!-- JS renders users here -->
+                    </tbody>
+                </table>
+                <!-- Loading -->
+                <div
+                    class="leaderboard-state"
+                    id="leaderboardLoading"
+                >
+                    <div class="state-spinner">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                    </div>
+                    <strong>
+                        Loading leaderboard
+                    </strong>
+                    <span>
+                        Fetching programmer rankings...
+                    </span>
+                </div>
+                <!-- Empty -->
+                <div
+                    class="leaderboard-state hidden"
+                    id="leaderboardEmpty"
+                >
+                    <div class="state-icon">
+                        <i class="fa-solid fa-users-slash"></i>
+                    </div>
+                    <strong>
+                        No users found
+                    </strong>
+                    <span>
+                        Try another search.
+                    </span>
+                </div>
+                <!-- Error -->
+                <div
+                    class="leaderboard-state hidden"
+                    id="leaderboardError"
+                >
+                    <div class="state-icon error">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <strong>
+                        Unable to load leaderboard
+                    </strong>
+                    <span>
+                        Please try again later.
+                    </span>
+                    <button
+                        type="button"
+                        id="retryLeaderboard"
+                    >
+                        Retry
+                    </button>
+                </div>
+            </div>
+            <!-- =================================================
+                 TABLE FOOTER
+                 ================================================= -->
+            <div class="ranking-footer">
+                <span id="rankingShowing">
+                    Showing 0 users
+                </span>
+                <div class="footer-info">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>
+                        Higher rating ranks first
+                    </span>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- =====================================================
+         NAVIGATION JS
+         ===================================================== -->
+    <script src="../js/nv.js"></script>
+    <!-- =====================================================
+         LEADERBOARD JS
+         ===================================================== -->
+    <script src="js/leaderboard.js"></script>
+</body>
+</html>

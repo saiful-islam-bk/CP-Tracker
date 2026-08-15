@@ -389,7 +389,7 @@
         renderWeakness(d);
         renderRatingSummary(d, profile);
         renderProblemAnalytics(d);
-        renderContests(d);
+        // renderContests(d);
         renderRatingAnalytics(d);
         renderRecentActivities(d);
         renderHeatmap(d);
@@ -1838,7 +1838,6 @@
                 })
                 .join("");
     }
-   
     /* =========================================================
        RATING ANALYTICS
        ========================================================= */
@@ -2277,181 +2276,6 @@
                     `;
                 })
                 .join("");
-    }
-    /* =========================================================
-       HEATMAP
-       ========================================================= */
-    function renderHeatmap(data) {
-        const grid =
-            $("heatmapGrid");
-        if (!grid) return;
-        const heatmap =
-            data.heatmap ||
-            data.activityHeatmap ||
-            [];
-        const map =
-            new Map();
-        heatmap.forEach(item => {
-            const date =
-                new Date(
-                    item.date
-                );
-            if (
-                !Number.isNaN(
-                    date.getTime()
-                )
-            ) {
-                const key =
-                    date.toISOString()
-                        .slice(0, 10);
-                map.set(
-                    key,
-                    Number(
-                        item.count ||
-                        item.solved ||
-                        0
-                    )
-                );
-            }
-        });
-        const cells = [];
-        const today =
-            new Date();
-        today.setHours(
-            0,
-            0,
-            0,
-            0
-        );
-        for (
-            let i = 364;
-            i >= 0;
-            i--
-        ) {
-            const date =
-                new Date(today);
-            date.setDate(
-                today.getDate() - i
-            );
-            const key =
-                date.toISOString()
-                    .slice(0, 10);
-            const count =
-                map.get(key) || 0;
-            let level = 0;
-            if (count === 1) {
-                level = 1;
-            } else if (count <= 3) {
-                level = 2;
-            } else if (count <= 5) {
-                level = 3;
-            } else if (count > 5) {
-                level = 4;
-            }
-            cells.push(`
-                <span
-                    class="heat-cell level-${level}"
-                    title="${count} solve${count === 1 ? "" : "s"} • ${key}">
-                </span>
-            `);
-        }
-        grid.innerHTML =
-            cells.join("");
-        /*
-         * Update totals
-         */
-        const total =
-            [...map.values()]
-                .reduce(
-                    (a, b) =>
-                        a + b,
-                    0
-                );
-        setText(
-            "activityTotal",
-            number(total)
-        );
-        const activeDays =
-            [...map.values()]
-                .filter(
-                    value =>
-                        value > 0
-                );
-        const longest =
-            calculateLongestStreak(
-                map
-            );
-        setText(
-            "activityLongestStreak",
-            number(longest)
-        );
-        /*
-         * Heatmap total is also useful
-         * for the current activity card.
-         */
-        const activitySummary =
-            document.querySelector(
-                ".activity-summary"
-            );
-        if (activitySummary) {
-            const spans =
-                activitySummary
-                    .querySelectorAll(
-                        "span"
-                    );
-            if (spans[0]) {
-                spans[0].textContent =
-                    "total solves";
-            }
-            if (spans[1]) {
-                spans[1].textContent =
-                    "longest streak";
-            }
-        }
-    }
-    function calculateLongestStreak(map) {
-        const dates =
-            [...map.entries()]
-                .filter(
-                    ([, count]) =>
-                        count > 0
-                )
-                .map(
-                    ([date]) =>
-                        new Date(date)
-                )
-                .sort(
-                    (a, b) =>
-                        a - b
-                );
-        if (!dates.length) {
-            return 0;
-        }
-        let longest = 1;
-        let current = 1;
-        for (
-            let i = 1;
-            i < dates.length;
-            i++
-        ) {
-            const diff =
-                (
-                    dates[i] -
-                    dates[i - 1]
-                ) /
-                86400000;
-            if (diff === 1) {
-                current++;
-                longest =
-                    Math.max(
-                        longest,
-                        current
-                    );
-            } else {
-                current = 1;
-            }
-        }
-        return longest;
     }
     /* =========================================================
        PERIOD SELECTORS
